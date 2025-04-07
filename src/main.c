@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 17:16:46 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 17:19:46 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ t_philo	*constructor(t_data *data, int nb)
 int	main(int ac, char **av)
 {
 	t_data			data;
-	// t_philo			**philos;	// TODO: Make this a list/array for all the philosophers
+	t_philo			**philos;	// TODO: Make this a list/array for all the philosophers
 	// pthread_t		*threads;	// TODO: Make this a list of all the threads
 	// pthread_mutex_t *mutexes;	// TODO: Make this a list of all the mutexes;
 
@@ -76,29 +76,33 @@ int	main(int ac, char **av)
 	// Start timer
 	if (gettimeofday(&data.start, NULL) < 0)
 		return (ERR_GTOD);
-	
+
 	// Create a list of forks as mutexes
 	pthread_mutex_t m1 = PTHREAD_MUTEX_INITIALIZER;
 	pthread_mutex_t m2 = PTHREAD_MUTEX_INITIALIZER;
 	pthread_mutex_init(&m1, NULL);
 	pthread_mutex_init(&m2, NULL);
 
-
 	// Create a list of philosophers as pthreads and start their thread
+	philos = malloc(3 * sizeof(t_philo *));
+	philos[0] = malloc(sizeof(t_philo));
+	philos[1] = malloc(sizeof(t_philo));
+	philos[2] = NULL;
+	
 	pthread_t pth1;
-	t_philo *philo1 = constructor(&data, 1);
-	if (!philo1)
+	philos[0] = constructor(&data, 1);
+	if (!philos[0])
 		return (1);
-	pthread_create(&pth1, NULL, &daily_routine, philo1);
-
+	pthread_create(&pth1, NULL, &daily_routine, philos[0]);
 
 	pthread_t pth2;
-	t_philo *philo2 = constructor(&data, 2);
-	if (!philo2)
+	philos[1]= constructor(&data, 2);
+	if (!philos[1])
 		return (1);
-	pthread_create(&pth2, NULL, &daily_routine, philo2);
-
+	pthread_create(&pth2, NULL, &daily_routine, philos[1]);
+	
 	// Create a new thread that constantly checks wether the philosophers are still alive
+	
 
 	// Wait for all the threads in the main process
 	pthread_join(pth1, NULL);
