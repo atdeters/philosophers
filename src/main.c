@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 17:39:34 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 17:46:27 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	main(int ac, char **av)
 	threads = malloc((data.nbp + 1) * sizeof(pthread_t *));
 	threads[0] = malloc(sizeof(pthread_t));
 	threads[1] = malloc(sizeof(pthread_t));
-	threads[data.nbp] = NULL; 
+	threads[data.nbp] = NULL;
 	
 	philos = malloc((data.nbp + 1) * sizeof(t_philo *));
 	philos[0] = malloc(sizeof(t_philo));

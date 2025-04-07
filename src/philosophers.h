@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 17:32:30 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 17:46:46 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_data
 		*
 		* The number of philosophers and also the number of forks.
 		*/
-	const int				nbp;
+	int				nbp;
 	/**
 		* @brief  time_to_die (in milliseconds)
 		*
@@ -65,7 +65,7 @@ typedef struct s_data
 		* since the beginning of their last meal or the beginning of
 		* the simulation, they die.
 		*/
-	const int				ttd;
+	int				ttd;
 	/**
 		* @brief time_to_eat (in milliseconds)
 		*
@@ -73,20 +73,20 @@ typedef struct s_data
 		*
 		* During that time, they will need to hold two forks.
 		*/
-	const int				tte;
+	int				tte;
 	/**
 		* @brief time_to_sleep (in milliseconds)
 		*
 		* The time a philosopher will spend sleeping.
 		*/
-	const int				tts;
+	int				tts;
 	/**
 		* @brief number_of_times_each_philosopher_must_eat (optional argument)
 		* If all philosophers have eaten at least
 		* number_of_times_each_philosopher_must_eat times, the simulation stops.
 		* If not specified, the simulation stops when a philosopher dies.
 		*/
-	const int				nbte;
+	int				nbte;
 	bool			is_kil;
 	int				error;
 	struct timeval	start;
