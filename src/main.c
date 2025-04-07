@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 17:01:08 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 17:06:20 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	*daily_routine(void *philo)
 	return (NULL);
 }
 
+// Make sure to not fuck up 0-Indexing while 1-Indexing philosophers
 t_philo	*constructor(t_data *data, int nb)
 {
 	t_philo	*p;
@@ -49,17 +50,23 @@ t_philo	*constructor(t_data *data, int nb)
 	p->philo_nb = nb;
 	p->time_since_meal = 0;
 	p->times_eaten = 0;
-	p->fork_left = nb;
-	p->fork_right = nb + 1; //! This needs to wrap around
+	if (nb == 0)
+		p->fork_left = p->data->nbp;
+	else
+		p->fork_left = nb;
+	if (nb == p->data->nbp - 1)
+		p->fork_right = 1;
+	else
+		p->fork_right = nb + 1;
 	return (p);
 }
 
 int	main(int ac, char **av)
 {
 	t_data			data;
-	// t_philo			**philos; // TODO: Make this a list/array for all the philosophers
-	// pthread_t		*threads; // TODO: Make this a list of all the threads
-	// pthread_mutex_t *mutexes; // TODO: Make this a list of all the mutexes;
+	// t_philo			**philos;	// TODO: Make this a list/array for all the philosophers
+	// pthread_t		*threads;	// TODO: Make this a list of all the threads
+	// pthread_mutex_t *mutexes;	// TODO: Make this a list of all the mutexes;
 
 	if (init_prog(&data, ac, av))
 		return (p_err(data.error));
