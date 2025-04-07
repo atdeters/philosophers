@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 17:31:39 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 17:39:34 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	main(int ac, char **av)
 	t_data			data;
 	t_philo			**philos;
 	pthread_t		**threads;
-	// pthread_mutex_t *mutexes;	// TODO: Make this a list of all the mutexes;
+	pthread_mutex_t **mutexes;
 
 	if (init_prog(&data, ac, av))
 		return (p_err(data.error));
@@ -78,21 +78,26 @@ int	main(int ac, char **av)
 		return (ERR_GTOD);
 
 	// Create a list of forks as mutexes
-	pthread_mutex_t m1 = PTHREAD_MUTEX_INITIALIZER;
-	pthread_mutex_t m2 = PTHREAD_MUTEX_INITIALIZER;
-	pthread_mutex_init(&m1, NULL);
-	pthread_mutex_init(&m2, NULL);
+	mutexes = malloc((data.nbp + 1) * sizeof(pthread_mutex_t *));
+	mutexes[0] = malloc(sizeof(pthread_mutex_t));
+	mutexes[1] = malloc(sizeof(pthread_mutex_t));
+	mutexes[data.nbp] = NULL;
+
+	*mutexes[0] = (pthread_mutex_t){0};
+	*mutexes[1] = (pthread_mutex_t){0};
+	pthread_mutex_init(mutexes[0], NULL);
+	pthread_mutex_init(mutexes[1], NULL);
 
 	// Create a list of philosophers as pthreads and start their thread
-	threads = malloc(data.nbp + 1 * sizeof(pthread_t *));
+	threads = malloc((data.nbp + 1) * sizeof(pthread_t *));
 	threads[0] = malloc(sizeof(pthread_t));
 	threads[1] = malloc(sizeof(pthread_t));
-	threads[2] = NULL; 
+	threads[data.nbp] = NULL; 
 	
-	philos = malloc(data.nbp + 1 * sizeof(t_philo *));
+	philos = malloc((data.nbp + 1) * sizeof(t_philo *));
 	philos[0] = malloc(sizeof(t_philo));
 	philos[1] = malloc(sizeof(t_philo));
-	philos[2] = NULL;
+	philos[data.nbp] = NULL;
 	
 	philos[0] = constructor(&data, 1);
 	if (!philos[0])
