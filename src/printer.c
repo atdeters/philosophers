@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:14:34 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 15:23:58 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 16:52:05 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ void	p_str_fd(int fd, char *str)
 	write(fd, str, ft_strlen(str));
 }
 
-void	p_log(t_data *data, int philo_nb, int action)
+bool	p_log(t_data *data, int philo_nb, int action)
 {
+	if (data->is_kil)
+		return (false);
 	p_nbr_fd(1, time_passed(data));
 	p_str_fd(1, "\t");
 	p_nbr_fd(1, philo_nb);
@@ -32,6 +34,7 @@ void	p_log(t_data *data, int philo_nb, int action)
 		p_str_fd(1, " is thinking\n");
 	if (action == DIE)
 		p_str_fd(1, " died\n");
+	return (true);
 }
 
 int	p_err(int code)

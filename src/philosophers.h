@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 16:45:50 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 16:51:03 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ void				p_str_fd(int fd, char *str);
 /**
  * @brief Prints a log for every action of any philosopher
  */
-void				p_log(t_data *data, int philo_nb, int action);
+bool				p_log(t_data *data, int philo_nb, int action);
 int					p_err(int code);
 int					p_err_arg(int code, char *arg);
 

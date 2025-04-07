@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 16:47:06 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 17:01:08 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,19 @@ void	*daily_routine(void *philo)
 	p = (t_philo *)philo;
 	while (1)
 	{
-		p_log(p->data, p->philo_nb, FORK);
-		p_log(p->data, p->philo_nb, FORK);
-		p_log(p->data, p->philo_nb, EAT);
+		if (!p_log(p->data, p->philo_nb, FORK))
+			break;
+		if (!p_log(p->data, p->philo_nb, FORK))
+			break;
+		if (!p_log(p->data, p->philo_nb, EAT))
+			break;
 		p->time_since_meal = time_passed(p->data);
 		usleep(p->data->tte);
-		p_log(p->data, p->philo_nb, SLEEP);
+		if (!p_log(p->data, p->philo_nb, SLEEP))
+			break;
 		usleep(p->data->tts);
-		p_log(p->data, p->philo_nb, THINK);
+		if (!p_log(p->data, p->philo_nb, THINK))
+			break;
 	}
 	return (NULL);
 }
@@ -59,15 +64,16 @@ int	main(int ac, char **av)
 	if (init_prog(&data, ac, av))
 		return (p_err(data.error));
 
+	// Start timer
+	if (gettimeofday(&data.start, NULL) < 0)
+		return (ERR_GTOD);
+	
 	// Create a list of forks as mutexes
 	pthread_mutex_t m1 = PTHREAD_MUTEX_INITIALIZER;
 	pthread_mutex_t m2 = PTHREAD_MUTEX_INITIALIZER;
 	pthread_mutex_init(&m1, NULL);
 	pthread_mutex_init(&m2, NULL);
 
-	// Start timer
-	if (gettimeofday(&data.start, NULL) < 0)
-		return (ERR_GTOD);
 
 	// Create a list of philosophers as pthreads and start their thread
 	pthread_t pth1;
@@ -76,15 +82,16 @@ int	main(int ac, char **av)
 		return (1);
 	pthread_create(&pth1, NULL, &daily_routine, philo1);
 
-	pthread_t pth2;
-	t_philo *philo2 = constructor(&data, 2);
-	if (!philo2)
-		return (1);
-	pthread_create(&pth2, NULL, &daily_routine, philo2);
+
+	// pthread_t pth2;
+	// t_philo *philo2 = constructor(&data, 2);
+	// if (!philo2)
+	// 	return (1);
+	// pthread_create(&pth2, NULL, &daily_routine, philo2);
 
 	// Create a new thread that constantly checks wether the philosophers are still alive
 
 	// Wait for all the threads in the main process
 	pthread_join(pth1, NULL);
-	pthread_join(pth2, NULL);
+	// pthread_join(pth2, NULL);
 }
