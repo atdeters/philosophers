@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 17:14:04 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 17:31:26 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ enum				e_errors
 	ERR_OVERFLOW = 4,
 	ERR_UNDERFLOW = 5,
 	ERR_NEG_ARG = 6,
+	ERR_MALLOC = 12,
 };
 
 enum				e_actions
@@ -176,7 +177,7 @@ int					ft_isdigit(int c);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // init.c
-int					check_arg(t_data *data, char *input, int *value);
+int					check_arg(t_data *data, char *input, int *value, bool is_time);
 int					parse_args(t_data *data, int ac, char **av);
 int					init_prog(t_data *data, int ac, char **av);
 
