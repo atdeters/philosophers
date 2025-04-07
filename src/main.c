@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 17:08:47 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 17:16:46 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	*daily_routine(void *philo)
 			break;
 		if (!p_log(p->data, p->philo_nb, EAT))
 			break;
-		p->time_since_meal = time_passed(p->data);
 		usleep(p->data->tte);
+		p->time_since_meal = time_passed(p->data);
 		if (!p_log(p->data, p->philo_nb, SLEEP))
 			break;
 		usleep(p->data->tts);
@@ -92,15 +92,15 @@ int	main(int ac, char **av)
 	pthread_create(&pth1, NULL, &daily_routine, philo1);
 
 
-	// pthread_t pth2;
-	// t_philo *philo2 = constructor(&data, 2);
-	// if (!philo2)
-	// 	return (1);
-	// pthread_create(&pth2, NULL, &daily_routine, philo2);
+	pthread_t pth2;
+	t_philo *philo2 = constructor(&data, 2);
+	if (!philo2)
+		return (1);
+	pthread_create(&pth2, NULL, &daily_routine, philo2);
 
 	// Create a new thread that constantly checks wether the philosophers are still alive
 
 	// Wait for all the threads in the main process
 	pthread_join(pth1, NULL);
-	// pthread_join(pth2, NULL);
+	pthread_join(pth2, NULL);
 }
