@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 17:46:27 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 17:49:01 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ t_philo	*constructor(t_data *data, int nb)
 	return (p);
 }
 
+// TODO: Incorperate the threads and mutexes in the philos array (So everyone has own fork kinda)
 int	main(int ac, char **av)
 {
 	t_data			data;
