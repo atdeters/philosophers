@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 16:28:22 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 16:29:39 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ t_philo	*constructor(t_data *data, int nb)
 	p->data = data;
 	p->philo_nb = nb;
 	p->time_since_meal = 0;
+	p->times_eaten = 0;
 	return (p);
 }
 
