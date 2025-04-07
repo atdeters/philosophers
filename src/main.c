@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 17:49:01 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 18:01:25 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ void	*daily_routine(void *philo)
 			break;
 		usleep(p->data->tte);
 		p->time_since_meal = time_passed(p->data);
+		p->times_eaten++;
+		if (p->times_eaten == p->data->nbte)
+			break;
 		if (!p_log(p->data, p->philo_nb, SLEEP))
 			break;
 		usleep(p->data->tts);

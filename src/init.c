@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 18:33:31 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 17:45:43 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 18:08:19 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ int	parse_args(t_data *data, int ac, char **av)
 		flag = ERR_INV_ARG;
 	if (check_arg(data, av[4], &data->tts, true))
 		flag = ERR_INV_ARG;
-	if (ac > 5 && check_arg(data, av[5], &data->nbte, false))
+	if (ac == 6 && check_arg(data, av[5], &data->nbte, false))
 		flag = ERR_INV_ARG;
-	else
+	else if (ac != 6)
 		data->nbte = -1;
 	return (data->error = flag, flag);
 }
