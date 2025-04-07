@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 17:06:20 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 17:08:47 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	*daily_routine(void *philo)
 	p = (t_philo *)philo;
 	while (1)
 	{
+		//* First grab lower fork number, then the larger one
+		//* Aka make the mutex that comes first be dependent on its number
 		if (!p_log(p->data, p->philo_nb, FORK))
 			break;
 		if (!p_log(p->data, p->philo_nb, FORK))
