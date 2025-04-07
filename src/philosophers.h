@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 12:53:34 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 15:18:07 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 // LIBRARIES
 # include <sys/time.h>
+# include <limits.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdbool.h>
@@ -89,6 +90,13 @@ typedef struct s_data
 	struct timeval	curr;
 	unsigned int	elapsed;
 }					t_data;
+
+typedef struct	s_philo
+{
+	t_data	*data;
+	int		philo_nb;
+}				t_philo;
+
 
 typedef struct s_atoi_data
 {

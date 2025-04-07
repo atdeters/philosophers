@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 18:33:31 by adeters           #+#    #+#             */
-/*   Updated: 2025/03/28 18:34:12 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 15:01:50 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ int	check_arg(t_data *data, char *input, int *value)
 	else if (error == -2)
 		return (data->error = p_err_arg(ERR_INV_ARG, input), 1);
 	*value = ft_atoi(input);
+	if (INT_MAX / 1000 < *value)
+		return (p_err_arg(ERR_OVERFLOW, input));
+	*value = *value * 1000;
 	if (*value < 0)
 		return (data->error = p_err_arg(ERR_NEG_ARG, input), 1);
 	return (0);
