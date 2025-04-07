@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 16:29:39 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 16:36:06 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ int	main(int ac, char **av)
 	if (init_prog(&data, ac, av))
 		return (p_err(data.error));
 	// Create a list of forks as mutexes
+	pthread_mutex_t m1 = PTHREAD_MUTEX_INITIALIZER;
+	pthread_mutex_t m2 = PTHREAD_MUTEX_INITIALIZER;
+	pthread_mutex_init(&m1, NULL);
+	pthread_mutex_init(&m2, NULL);
+
 	
 	// Start timer
 	if (gettimeofday(&data.start, NULL) < 0)
