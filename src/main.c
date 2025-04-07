@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 15:25:06 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 16:28:22 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,18 @@ void	*daily_routine(void *philo)
 	return (NULL);
 }
 
+t_philo	*constructor(t_data *data, int nb)
+{
+	t_philo	*p;
 
+	p = malloc(sizeof(t_philo));
+	if (!p)
+		return (NULL);
+	p->data = data;
+	p->philo_nb = nb;
+	p->time_since_meal = 0;
+	return (p);
+}
 
 int	main(int ac, char **av)
 {
@@ -45,26 +56,24 @@ int	main(int ac, char **av)
 
 	if (init_prog(&data, ac, av))
 		return (p_err(data.error));
+	// Create a list of forks as mutexes
+	
+	// Start timer
 	if (gettimeofday(&data.start, NULL) < 0)
 		return (ERR_GTOD);
 
 	// Create a list of philosophers as pthreads and start their thread
 	pthread_t p1;
-	t_philo philo1;
-	philo1.data = &data;
-	philo1.philo_nb = 1;
-	philo1.time_since_meal = 0;
-	pthread_create(&p1, NULL, &daily_routine, &philo1);
+	t_philo *philo1 = constructor(&data, 1);
+	if (!philo1)
+		return (1);
+	pthread_create(&p1, NULL, &daily_routine, philo1);
 
 	pthread_t p2;
-	t_philo philo2;
-	philo2.data = &data;
-	philo2.philo_nb = 2;
-	philo2.time_since_meal = 0;
-	pthread_create(&p2, NULL, &daily_routine, &philo2);
-	
-	// Create a list of forks as mutexes
-
+	t_philo *philo2 = constructor(&data, 2);
+	if (!philo2)
+		return (1);
+	pthread_create(&p2, NULL, &daily_routine, philo2);
 	// Create a new thread that constantly checks wether the philosophers are still alive
 
 	// Wait for all the threads in the main process
