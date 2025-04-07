@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 15:18:07 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 15:23:28 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,9 @@ typedef struct s_data
 
 typedef struct	s_philo
 {
-	t_data	*data;
-	int		philo_nb;
+	t_data			*data;
+	unsigned int	time_since_meal;
+	int				philo_nb;
 }				t_philo;
 
 
