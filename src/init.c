@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 18:33:31 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 15:01:50 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 16:46:39 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ int	init_prog(t_data *data, int ac, char **av)
 {
 	if (parse_args(data, ac, av))
 		return (data->error);
+	data->is_kil = false;
 	return (0);
 }

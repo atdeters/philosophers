@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 16:29:28 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 16:45:50 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_data
 		* If not specified, the simulation stops when a philosopher dies.
 		*/
 	int				nbte;
+	bool			is_kil;
 	int				error;
 	struct timeval	start;
 	struct timeval	curr;
@@ -97,6 +98,8 @@ typedef struct	s_philo
 	unsigned int	time_since_meal;
 	int				philo_nb;
 	int				times_eaten;
+	int				fork_left;
+	int				fork_right;
 }				t_philo;
 
 
