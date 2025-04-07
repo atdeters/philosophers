@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:14:34 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 17:15:33 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/07 18:10:19 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	p_str_fd(int fd, char *str)
 	write(fd, str, ft_strlen(str));
 }
 
+// Add usleep here maybe
 bool	p_log(t_data *data, int philo_nb, int action)
 {
 	if (data->is_kil)
