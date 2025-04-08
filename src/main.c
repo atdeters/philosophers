@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/08 13:42:22 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/08 13:53:18 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,16 @@ void	*daily_routine(void *philo)
 	p = (t_philo *)philo;
 	while (!p->data->is_kil)
 	{
-		//* First grab lower fork number, then the larger one
-		//* Aka make the mutex that comes first be dependent on its number
-		pthread_mutex_lock(&p->mutexes[p->fork_left]);
+		if (p->fork_left < p->fork_right)
+			pthread_mutex_lock(&p->mutexes[p->fork_left]);
+		else
+			pthread_mutex_lock(&p->mutexes[p->fork_right]);
 		if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
 			break;
-		pthread_mutex_lock(&p->mutexes[p->fork_right]);
+		if (p->fork_left > p->fork_right)
+			pthread_mutex_lock(&p->mutexes[p->fork_left]);
+		else
+			pthread_mutex_lock(&p->mutexes[p->fork_right]);
 		if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
 			break;
 		if (!p_log(p->data, p->philo_nb, EAT, p->mutexes))
@@ -62,8 +66,9 @@ void	*check_death(void *philos)
 		i = 0;
 		while (i < nb)
 		{
-			if ((time_passed((*ps)->data) - ps[i]->time_since_meal) > (unsigned int)(*ps)->data->ttd / 1000)
+			if ((time_passed((*ps)->data) - ps[i]->time_since_meal) >= (unsigned int)(*ps)->data->ttd / 1000)
 			{
+				printf("time since last meal: %d\n", (time_passed((*ps)->data) - ps[i]->time_since_meal));
 				p_log((*ps)->data, i + 1, DIE, (*ps)->mutexes);
 				(*ps)->data->is_kil = true;
 				flag = true;
@@ -104,10 +109,12 @@ t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 	if (nb == p->data->nbp)
 		p->fork_right = 0;
 	else
-		p->fork_right = nb - 1;
+		p->fork_right = nb;
 	return (p);
 }
 
+// Maybe a good idea to make an extra thread for the dead processing and an extra mutex for the 
+// Printer to not fuck something up because of their confusing names right now
 int	main(int ac, char **av)
 {
 	t_data			data;
