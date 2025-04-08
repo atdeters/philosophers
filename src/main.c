@@ -97,7 +97,7 @@ t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 	return (p);
 }
 
-// TODO: Incorperate the threads and mutexes in the philos array (So everyone has own fork kinda)
+// TODO: MAke all the allocations happen automatically from the actual number of philos in the cmd line
 int	main(int ac, char **av)
 {
 	t_data			data;
