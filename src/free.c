@@ -1,42 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   helpers2.c                                         :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/28 18:30:51 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/08 12:26:23 by andreas          ###   ########.fr       */
+/*   Created: 2025/04/08 12:26:11 by andreas           #+#    #+#             */
+/*   Updated: 2025/04/08 12:28:01 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	ft_isdigit(int c)
+void	free_philos(t_philo **lst)
 {
-	if (c >= '0' && c <= '9')
-		return (2048);
-	return (0);
-}
+	int	i;
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-
-	if (!s1 || !s2)
-		return (0);
 	i = 0;
-	while (s1[i] && i < n)
+	while (lst[i])
 	{
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		free(lst[i]);
 		i++;
 	}
-	while (s2[i] && i < n)
-	{
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
-	}
-	return (0);
+	free(lst);
+	lst = NULL;
 }

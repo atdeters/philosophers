@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/08 12:18:48 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/08 12:44:05 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,9 @@ typedef struct s_atoi_data
  * characters, or no digits after `+` or `-`).
  */
 int					check_overflow(char *str);
+
+// free.c
+void				free_philos(t_philo **lst);
 
 // helpers.c
 int					ft_strlen(char *str);

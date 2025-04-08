@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/08 12:25:34 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/08 12:55:44 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,36 @@ void	*daily_routine(void *philo)
 			break;
 		usleep(p->data->tts);
 		if (!p_log(p->data, p->philo_nb, THINK))
+			break;
+	}
+	return (NULL);
+}
+
+void	*check_death(void *philos)
+{
+	t_philo	**ps;
+	int		i;
+	int		nb;
+	bool	flag;
+
+	ps = (t_philo **)philos;
+	nb = (*ps)->data->nbp;
+	flag = false;
+	while (1)
+	{
+		i = 0;
+		while (i < nb)
+		{
+			if ((time_passed((*ps)->data) - ps[i]->time_since_meal) > (unsigned int)(*ps)->data->ttd / 1000)
+			{
+				p_log((*ps)->data, i + 1, DIE);
+				(*ps)->data->is_kil = true;
+				flag = true;
+				break;
+			}
+			i++;
+		}
+		if (flag)
 			break;
 	}
 	return (NULL);
@@ -89,8 +119,8 @@ int	main(int ac, char **av)
 	pthread_mutex_init(&mutexes[1], NULL);
 
 	// Create a list of philosophers as pthreads and start their thread
-	threads = malloc(data.nbp  * sizeof(pthread_t));
-	memset(threads, 0, data.nbp  * sizeof(pthread_t));
+	threads = malloc((data.nbp + 1)  * sizeof(pthread_t));
+	memset(threads, 0, (data.nbp + 1) * sizeof(pthread_t));
 	
 	philos = malloc((data.nbp + 1) * sizeof(t_philo *));
 	memset(philos, 0, (data.nbp + 1) * sizeof(t_philo *));
@@ -107,11 +137,12 @@ int	main(int ac, char **av)
 	pthread_create(&threads[1], NULL, &daily_routine, philos[1]);
 	
 	// Create a new thread that constantly checks wether the philosophers are still alive
-	
+	pthread_create(&threads[data.nbp], NULL, &check_death, philos);
 
 	// Wait for all the threads in the main process
 	pthread_join(threads[0], NULL);
 	pthread_join(threads[1], NULL);
+	pthread_join(threads[data.nbp], NULL);
 
 	// Exit properly
 	pthread_mutex_destroy(&mutexes[0]);
