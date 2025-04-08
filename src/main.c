@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/08 12:19:50 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/08 12:25:34 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,14 @@ int	main(int ac, char **av)
 
 	// Create a list of forks as mutexes
 	mutexes = malloc(data.nbp * sizeof(pthread_mutex_t));
-
-	mutexes[0] = (pthread_mutex_t){0};
-	mutexes[1] = (pthread_mutex_t){0};
+	memset(mutexes, 0, data.nbp * sizeof(pthread_mutex_t));
+	
 	pthread_mutex_init(&mutexes[0], NULL);
 	pthread_mutex_init(&mutexes[1], NULL);
 
 	// Create a list of philosophers as pthreads and start their thread
 	threads = malloc(data.nbp  * sizeof(pthread_t));
+	memset(threads, 0, data.nbp  * sizeof(pthread_t));
 	
 	philos = malloc((data.nbp + 1) * sizeof(t_philo *));
 	memset(philos, 0, (data.nbp + 1) * sizeof(t_philo *));
@@ -119,8 +119,9 @@ int	main(int ac, char **av)
 
 	// Free all the memory
 	free(mutexes);
+	mutexes = NULL;
 	free(threads);
-	// free_mutexes(&mutexes);
-	// free_threads(threads);
+	threads = NULL;
 	free_philos(philos);
+	philos = NULL;
 }
