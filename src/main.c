@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/08 12:55:44 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/08 12:59:14 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	*check_death(void *philos)
 }
 
 // Make sure to not fuck up 0-Indexing while 1-Indexing philosophers
-t_philo	*constructor(t_data *data, int nb)
+t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 {
 	t_philo	*p;
 
@@ -85,7 +85,8 @@ t_philo	*constructor(t_data *data, int nb)
 	p->philo_nb = nb;
 	p->time_since_meal = 0;
 	p->times_eaten = 0;
-	if (nb == 0)
+	p->mutexes = mutexes;
+	if (nb == 1)
 		p->fork_left = p->data->nbp;
 	else
 		p->fork_left = nb;
@@ -126,12 +127,12 @@ int	main(int ac, char **av)
 	memset(philos, 0, (data.nbp + 1) * sizeof(t_philo *));
 	philos[data.nbp] = NULL;
 	
-	philos[0] = constructor(&data, 1);
+	philos[0] = constructor(&data, mutexes, 1);
 	if (!philos[0])
 		return (ERR_MALLOC);
 	pthread_create(&threads[0], NULL, &daily_routine, philos[0]);
 	
-	philos[1]= constructor(&data, 2);
+	philos[1]= constructor(&data, mutexes, 2);
 	if (!philos[1])
 		return (ERR_MALLOC);
 	pthread_create(&threads[1], NULL, &daily_routine, philos[1]);
