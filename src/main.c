@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
+/*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 18:09:03 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/08 11:44:29 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,4 +119,8 @@ int	main(int ac, char **av)
 	// Wait for all the threads in the main process
 	pthread_join(*threads[0], NULL);
 	pthread_join(*threads[1], NULL);
+
+	// Exit properly
+	pthread_mutex_destroy(mutexes[0]);
+	pthread_mutex_destroy(mutexes[1]);
 }
