@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/08 11:44:29 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/08 12:19:50 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ int	main(int ac, char **av)
 {
 	t_data			data;
 	t_philo			**philos;
-	pthread_t		**threads;
-	pthread_mutex_t **mutexes;
+	pthread_t		*threads;
+	pthread_mutex_t *mutexes;
 
 	if (init_prog(&data, ac, av))
 		return (p_err(data.error));
@@ -82,45 +82,45 @@ int	main(int ac, char **av)
 		return (ERR_GTOD);
 
 	// Create a list of forks as mutexes
-	mutexes = malloc((data.nbp + 1) * sizeof(pthread_mutex_t *));
-	mutexes[0] = malloc(sizeof(pthread_mutex_t));
-	mutexes[1] = malloc(sizeof(pthread_mutex_t));
-	mutexes[data.nbp] = NULL;
+	mutexes = malloc(data.nbp * sizeof(pthread_mutex_t));
 
-	*mutexes[0] = (pthread_mutex_t){0};
-	*mutexes[1] = (pthread_mutex_t){0};
-	pthread_mutex_init(mutexes[0], NULL);
-	pthread_mutex_init(mutexes[1], NULL);
+	mutexes[0] = (pthread_mutex_t){0};
+	mutexes[1] = (pthread_mutex_t){0};
+	pthread_mutex_init(&mutexes[0], NULL);
+	pthread_mutex_init(&mutexes[1], NULL);
 
 	// Create a list of philosophers as pthreads and start their thread
-	threads = malloc((data.nbp + 1) * sizeof(pthread_t *));
-	threads[0] = malloc(sizeof(pthread_t));
-	threads[1] = malloc(sizeof(pthread_t));
-	threads[data.nbp] = NULL;
+	threads = malloc(data.nbp  * sizeof(pthread_t));
 	
 	philos = malloc((data.nbp + 1) * sizeof(t_philo *));
-	philos[0] = malloc(sizeof(t_philo));
-	philos[1] = malloc(sizeof(t_philo));
+	memset(philos, 0, (data.nbp + 1) * sizeof(t_philo *));
 	philos[data.nbp] = NULL;
 	
 	philos[0] = constructor(&data, 1);
 	if (!philos[0])
 		return (ERR_MALLOC);
-	pthread_create(threads[0], NULL, &daily_routine, philos[0]);
+	pthread_create(&threads[0], NULL, &daily_routine, philos[0]);
 	
 	philos[1]= constructor(&data, 2);
 	if (!philos[1])
 		return (ERR_MALLOC);
-	pthread_create(threads[1], NULL, &daily_routine, philos[1]);
+	pthread_create(&threads[1], NULL, &daily_routine, philos[1]);
 	
 	// Create a new thread that constantly checks wether the philosophers are still alive
 	
 
 	// Wait for all the threads in the main process
-	pthread_join(*threads[0], NULL);
-	pthread_join(*threads[1], NULL);
+	pthread_join(threads[0], NULL);
+	pthread_join(threads[1], NULL);
 
 	// Exit properly
-	pthread_mutex_destroy(mutexes[0]);
-	pthread_mutex_destroy(mutexes[1]);
+	pthread_mutex_destroy(&mutexes[0]);
+	pthread_mutex_destroy(&mutexes[1]);
+
+	// Free all the memory
+	free(mutexes);
+	free(threads);
+	// free_mutexes(&mutexes);
+	// free_threads(threads);
+	free_philos(philos);
 }
