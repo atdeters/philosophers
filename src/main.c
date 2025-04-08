@@ -120,34 +120,43 @@ int	main(int ac, char **av)
 	pthread_mutex_init(&mutexes[1], NULL);
 
 	// Create a list of philosophers as pthreads and start their thread
-	threads = malloc((data.nbp + 1)  * sizeof(pthread_t));
+	threads = malloc((data.nbp + 1)  * sizeof(pthread_t)); //! Protec + Free
 	memset(threads, 0, (data.nbp + 1) * sizeof(pthread_t));
 	
-	philos = malloc((data.nbp + 1) * sizeof(t_philo *));
+	philos = malloc((data.nbp + 1) * sizeof(t_philo *)); //! Protec + Free
 	memset(philos, 0, (data.nbp + 1) * sizeof(t_philo *));
 	philos[data.nbp] = NULL;
 	
-	philos[0] = constructor(&data, mutexes, 1);
-	if (!philos[0])
-		return (ERR_MALLOC);
-	pthread_create(&threads[0], NULL, &daily_routine, philos[0]);
-	
-	philos[1]= constructor(&data, mutexes, 2);
-	if (!philos[1])
-		return (ERR_MALLOC);
-	pthread_create(&threads[1], NULL, &daily_routine, philos[1]);
+	int	i;
+
+	i = 0;
+	while (i < data.nbp)
+	{
+		philos[i] = constructor(&data, mutexes, i + 1);
+		if (!philos[i])
+			return (ERR_MALLOC); //! Must free everything
+		pthread_create(&threads[i], NULL, &daily_routine, philos[i]);
+		i++;
+	}
 	
 	// Create a new thread that constantly checks wether the philosophers are still alive
 	pthread_create(&threads[data.nbp], NULL, &check_death, philos);
 
 	// Wait for all the threads in the main process
-	pthread_join(threads[0], NULL);
-	pthread_join(threads[1], NULL);
-	pthread_join(threads[data.nbp], NULL);
+	i = 0;
+	while (i < data.nbp + 1)
+	{
+		pthread_join(threads[i], NULL);
+		i++;
+	}
 
 	// Exit properly
-	pthread_mutex_destroy(&mutexes[0]);
-	pthread_mutex_destroy(&mutexes[1]);
+	i = 0;
+	while (i < data.nbp)
+	{
+		pthread_mutex_destroy(&mutexes[i]);
+		i++;
+	}
 
 	// Free all the memory
 	free(mutexes);
