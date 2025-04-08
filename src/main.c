@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/08 13:34:01 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/08 13:42:22 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ void	*daily_routine(void *philo)
 		//* First grab lower fork number, then the larger one
 		//* Aka make the mutex that comes first be dependent on its number
 		pthread_mutex_lock(&p->mutexes[p->fork_left]);
-		if (!p_log(p->data, p->philo_nb, FORK))
+		if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
 			break;
 		pthread_mutex_lock(&p->mutexes[p->fork_right]);
-		if (!p_log(p->data, p->philo_nb, FORK))
+		if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
 			break;
-		if (!p_log(p->data, p->philo_nb, EAT))
+		if (!p_log(p->data, p->philo_nb, EAT, p->mutexes))
 			break;
 		usleep(p->data->tte);
 		pthread_mutex_unlock(&p->mutexes[p->fork_left]);
@@ -38,10 +38,10 @@ void	*daily_routine(void *philo)
 		p->times_eaten++;
 		if (p->times_eaten == p->data->nbte)
 			break;
-		if (!p_log(p->data, p->philo_nb, SLEEP))
+		if (!p_log(p->data, p->philo_nb, SLEEP, p->mutexes))
 			break;
 		usleep(p->data->tts);
-		if (!p_log(p->data, p->philo_nb, THINK))
+		if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
 			break;
 	}
 	return (NULL);
@@ -64,9 +64,16 @@ void	*check_death(void *philos)
 		{
 			if ((time_passed((*ps)->data) - ps[i]->time_since_meal) > (unsigned int)(*ps)->data->ttd / 1000)
 			{
-				p_log((*ps)->data, i + 1, DIE);
+				p_log((*ps)->data, i + 1, DIE, (*ps)->mutexes);
 				(*ps)->data->is_kil = true;
 				flag = true;
+				// Open up all the locks
+				int j = 0;
+				while (j < (*ps)->data->nbp + 1)
+				{
+					pthread_mutex_unlock(&(*ps)->mutexes[j]);
+					j++;
+				}
 				break;
 			}
 			i++;
@@ -116,13 +123,13 @@ int	main(int ac, char **av)
 		return (ERR_GTOD);
 
 	// Create a list of forks as mutexes
-	mutexes = malloc(data.nbp * sizeof(pthread_mutex_t));
-	memset(mutexes, 0, data.nbp * sizeof(pthread_mutex_t));
+	mutexes = malloc((data.nbp + 1) * sizeof(pthread_mutex_t));
+	memset(mutexes, 0, (data.nbp + 1) * sizeof(pthread_mutex_t));
 
 	int	i;
 
 	i = 0;
-	while (i < data.nbp)
+	while (i < data.nbp + 1)
 	{
 		pthread_mutex_init(&mutexes[i], NULL);
 		i++;
@@ -159,7 +166,7 @@ int	main(int ac, char **av)
 
 	// Exit properly
 	i = 0;
-	while (i < data.nbp)
+	while (i < data.nbp + 1)
 	{
 		pthread_mutex_destroy(&mutexes[i]);
 		i++;

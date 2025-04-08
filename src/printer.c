@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   printer.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
+/*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:14:34 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 18:10:19 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/08 13:47:03 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ void	p_str_fd(int fd, char *str)
 }
 
 // Add usleep here maybe
-bool	p_log(t_data *data, int philo_nb, int action)
+bool	p_log(t_data *data, int philo_nb, int action, pthread_mutex_t *mutexes)
 {
 	if (data->is_kil)
 		return (false);
+	pthread_mutex_lock(&mutexes[data->nbp]);
 	p_nbr_fd(1, time_passed(data));
 	p_str_fd(1, "\t");
 	p_nbr_fd(1, philo_nb);
@@ -35,6 +36,7 @@ bool	p_log(t_data *data, int philo_nb, int action)
 		p_str_fd(1, " is thinking\n");
 	if (action == DIE)
 		p_str_fd(1, " died\n");
+	pthread_mutex_unlock(&mutexes[data->nbp]);
 	return (true);
 }
 
