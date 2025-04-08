@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/08 12:59:14 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/08 13:34:01 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,17 @@ void	*daily_routine(void *philo)
 	{
 		//* First grab lower fork number, then the larger one
 		//* Aka make the mutex that comes first be dependent on its number
+		pthread_mutex_lock(&p->mutexes[p->fork_left]);
 		if (!p_log(p->data, p->philo_nb, FORK))
 			break;
+		pthread_mutex_lock(&p->mutexes[p->fork_right]);
 		if (!p_log(p->data, p->philo_nb, FORK))
 			break;
 		if (!p_log(p->data, p->philo_nb, EAT))
 			break;
 		usleep(p->data->tte);
+		pthread_mutex_unlock(&p->mutexes[p->fork_left]);
+		pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 		p->time_since_meal = time_passed(p->data);
 		p->times_eaten++;
 		if (p->times_eaten == p->data->nbte)
@@ -87,17 +91,16 @@ t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 	p->times_eaten = 0;
 	p->mutexes = mutexes;
 	if (nb == 1)
-		p->fork_left = p->data->nbp;
+		p->fork_left = p->data->nbp - 1;
 	else
-		p->fork_left = nb;
-	if (nb == p->data->nbp - 1)
-		p->fork_right = 1;
+		p->fork_left = nb - 1;
+	if (nb == p->data->nbp)
+		p->fork_right = 0;
 	else
-		p->fork_right = nb + 1;
+		p->fork_right = nb - 1;
 	return (p);
 }
 
-// TODO: MAke all the allocations happen automatically from the actual number of philos in the cmd line
 int	main(int ac, char **av)
 {
 	t_data			data;
@@ -115,9 +118,15 @@ int	main(int ac, char **av)
 	// Create a list of forks as mutexes
 	mutexes = malloc(data.nbp * sizeof(pthread_mutex_t));
 	memset(mutexes, 0, data.nbp * sizeof(pthread_mutex_t));
-	
-	pthread_mutex_init(&mutexes[0], NULL);
-	pthread_mutex_init(&mutexes[1], NULL);
+
+	int	i;
+
+	i = 0;
+	while (i < data.nbp)
+	{
+		pthread_mutex_init(&mutexes[i], NULL);
+		i++;
+	}
 
 	// Create a list of philosophers as pthreads and start their thread
 	threads = malloc((data.nbp + 1)  * sizeof(pthread_t)); //! Protec + Free
@@ -126,8 +135,6 @@ int	main(int ac, char **av)
 	philos = malloc((data.nbp + 1) * sizeof(t_philo *)); //! Protec + Free
 	memset(philos, 0, (data.nbp + 1) * sizeof(t_philo *));
 	philos[data.nbp] = NULL;
-	
-	int	i;
 
 	i = 0;
 	while (i < data.nbp)
