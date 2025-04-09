@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/09 16:31:22 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/09 17:33:31 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,26 @@ void	*check_death(void *philos)
 			if ((time_passed((*ps)->data) - ps[i]->time_since_meal) >= (unsigned int)(*ps)->data->ttd / 1000)
 			{
 				p_log((*ps)->data, i + 1, DIE, (*ps)->mutexes);
+				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
 				(*ps)->data->is_kil = true;
+				pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
 				flag = true;
+				// Open up all the locks
+				int j = 0;
+				while (j < (*ps)->data->nbp + 2)
+				{
+					pthread_mutex_unlock(&(*ps)->mutexes[j]);
+					j++;
+				}
 				break;
 			}
 			i++;
 		}
-		if ((*ps)->data->nb_finished_eating == (*ps)->data->nbp)
-			break;
 		if (flag)
 			break;
-		usleep(500);
+		if ((*ps)->data->nb_finished_eating == (*ps)->data->nbp)
+			break;
+		usleep(5000);
 	}
 	return (NULL);
 }
@@ -127,7 +136,7 @@ t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 }
 
 // Maybe a good idea to make an extra thread for the dead processing and an extra mutex for the 
-// Printer to not fuck something up because of their confusing names right now
+// Printer to not fuck something up because of their confusing names right now, also death mutex now
 int	main(int ac, char **av)
 {
 	t_data			data;
@@ -143,13 +152,13 @@ int	main(int ac, char **av)
 		return (ERR_GTOD);
 
 	// Create a list of forks as mutexes
-	mutexes = malloc((data.nbp + 1) * sizeof(pthread_mutex_t));
-	memset(mutexes, 0, (data.nbp + 1) * sizeof(pthread_mutex_t));
+	mutexes = malloc((data.nbp + 2) * sizeof(pthread_mutex_t));
+	memset(mutexes, 0, (data.nbp + 2) * sizeof(pthread_mutex_t));
 
 	int	i;
 
 	i = 0;
-	while (i < data.nbp + 1)
+	while (i < data.nbp + 2)
 	{
 		pthread_mutex_init(&mutexes[i], NULL);
 		i++;
@@ -186,7 +195,7 @@ int	main(int ac, char **av)
 	}
 	// Exit properly
 	i = 0;
-	while (i < data.nbp + 1)
+	while (i < data.nbp + 2)
 	{
 		pthread_mutex_destroy(&mutexes[i]);
 		i++;
