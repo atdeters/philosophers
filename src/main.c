@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/09 08:11:53 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/09 11:36:00 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ void	*daily_routine(void *philo)
 		p->time_since_meal = time_passed(p->data);
 		p->times_eaten++;
 		if (p->times_eaten == p->data->nbte)
+		{
+			p->data->nb_finished_eating++;
 			break;
+		}
 		if (!p_log(p->data, p->philo_nb, SLEEP, p->mutexes))
 			break;
 		usleep(p->data->tts);
@@ -67,7 +70,7 @@ void	*check_death(void *philos)
 		{
 			if ((time_passed((*ps)->data) - ps[i]->time_since_meal) >= (unsigned int)(*ps)->data->ttd / 1000)
 			{
-				printf("time since last meal: %d\n", (time_passed((*ps)->data) - ps[i]->time_since_meal));
+				// printf("time since last meal: %d\n", (time_passed((*ps)->data) - ps[i]->time_since_meal));
 				p_log((*ps)->data, i + 1, DIE, (*ps)->mutexes);
 				(*ps)->data->is_kil = true;
 				flag = true;
@@ -82,6 +85,8 @@ void	*check_death(void *philos)
 			}
 			i++;
 		}
+		if ((*ps)->data->nb_finished_eating == (*ps)->data->nbp)
+			break;
 		if (flag)
 			break;
 	}
@@ -114,7 +119,6 @@ t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 
 // Maybe a good idea to make an extra thread for the dead processing and an extra mutex for the 
 // Printer to not fuck something up because of their confusing names right now
-//! When one philosopher finished all his eating he must unlock his fork, rn we get stuck
 int	main(int ac, char **av)
 {
 	t_data			data;
@@ -170,7 +174,6 @@ int	main(int ac, char **av)
 		pthread_join(threads[i], NULL);
 		i++;
 	}
-
 	// Exit properly
 	i = 0;
 	while (i < data.nbp + 1)

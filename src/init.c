@@ -60,5 +60,6 @@ int	init_prog(t_data *data, int ac, char **av)
 	if (parse_args(data, ac, av))
 		return (data->error);
 	data->is_kil = false;
+	data->nb_finished_eating = 0;
 	return (0);
 }

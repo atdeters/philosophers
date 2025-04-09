@@ -90,6 +90,7 @@ typedef struct s_data
 	int				nbte;
 	bool			is_kil;
 	int				error;
+	int				nb_finished_eating;
 	struct timeval	start;
 	struct timeval	curr;
 	unsigned int	elapsed;
