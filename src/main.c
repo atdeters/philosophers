@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/09 17:33:31 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/09 17:41:00 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	*check_death(void *philos)
 			break;
 		if ((*ps)->data->nb_finished_eating == (*ps)->data->nbp)
 			break;
-		usleep(5000);
+		usleep(500);
 	}
 	return (NULL);
 }
@@ -208,4 +208,7 @@ int	main(int ac, char **av)
 	threads = NULL;
 	free_philos(philos);
 	philos = NULL;
+	if (data.is_kil)
+		return (1);
+	return (0);
 }
