@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/09 14:46:49 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/09 15:23:56 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	*check_death(void *philos)
 		{
 			if ((time_passed((*ps)->data) - ps[i]->time_since_meal) >= (unsigned int)(*ps)->data->ttd / 1000)
 			{
-				// printf("time since last meal: %d\n", (time_passed((*ps)->data) - ps[i]->time_since_meal));
 				p_log((*ps)->data, i + 1, DIE, (*ps)->mutexes);
 				(*ps)->data->is_kil = true;
 				flag = true;
