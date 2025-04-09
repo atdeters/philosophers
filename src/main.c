@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/09 15:23:56 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/09 16:31:22 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	*daily_routine(void *philo)
 		if (!p_log(p->data, p->philo_nb, EAT, p->mutexes))
 			break;
 		p->time_since_meal = time_passed(p->data);
-		p->times_eaten++;
 		usleep(p->data->tte);	
+		p->times_eaten++;
 		pthread_mutex_unlock(&p->mutexes[p->fork_left]);
 		pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 		if (p->times_eaten == p->data->nbte)
@@ -73,13 +73,6 @@ void	*check_death(void *philos)
 				p_log((*ps)->data, i + 1, DIE, (*ps)->mutexes);
 				(*ps)->data->is_kil = true;
 				flag = true;
-				// Open up all the locks
-				int j = 0;
-				while (j < (*ps)->data->nbp + 1)
-				{
-					pthread_mutex_unlock(&(*ps)->mutexes[j]);
-					j++;
-				}
 				break;
 			}
 			i++;
@@ -176,12 +169,13 @@ int	main(int ac, char **av)
 		philos[i] = constructor(&data, mutexes, i + 1);
 		if (!philos[i])
 			return (ERR_MALLOC); //! Must free everything
-		pthread_create(&threads[i], NULL, &daily_routine, philos[i]);
+		pthread_create(&threads[i], NULL, &daily_routine, philos[i]); //! Protec
 		i++;
 	}
-	
+
 	// Create a new thread that constantly checks wether the philosophers are still alive
-	pthread_create(&threads[data.nbp], NULL, &check_death, philos);
+	pthread_create(&threads[data.nbp], NULL, &check_death, philos); //! Protec
+	//! If the creation of a thread fails than all of the previous ones need to be joined before exiting
 
 	// Wait for all the threads in the main process
 	i = 0;
