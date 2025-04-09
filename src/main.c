@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/09 17:41:00 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/09 18:17:15 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ void	*daily_routine(void *philo)
 			break;
 		p->time_since_meal = time_passed(p->data);
 		usleep(p->data->tte);	
-		p->times_eaten++;
+		p->times_eaten++; //? Does not need mutex i think as only one thread uses it
 		pthread_mutex_unlock(&p->mutexes[p->fork_left]);
 		pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 		if (p->times_eaten == p->data->nbte)
 		{
-			p->data->nb_finished_eating++;
+			p->data->nb_finished_eating++; //! also needs a mutex
 			break;
 		}
 		if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
@@ -70,9 +70,12 @@ void	*check_death(void *philos)
 		{
 			if ((time_passed((*ps)->data) - ps[i]->time_since_meal) >= (unsigned int)(*ps)->data->ttd / 1000)
 			{
-				p_log((*ps)->data, i + 1, DIE, (*ps)->mutexes);
 				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
+				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp]);
+				// p_log((*ps)->data, i + 1, DIE, (*ps)->mutexes);
+				printf("%d\t%d died\n", time_passed((*ps)->data), i + 1);
 				(*ps)->data->is_kil = true;
+				pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp]);
 				pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
 				flag = true;
 				// Open up all the locks
@@ -95,7 +98,6 @@ void	*check_death(void *philos)
 	return (NULL);
 }
 
-// Make sure to not fuck up 0-Indexing while 1-Indexing philosophers
 t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 {
 	t_philo	*p;

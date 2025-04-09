@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:14:34 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/09 17:32:00 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/09 18:08:09 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	p_str_fd(int fd, char *str)
 }
 
 // Add usleep here maybe
+// Change this to printf instead of the stupid thing
 bool	p_log(t_data *data, int philo_nb, int action, pthread_mutex_t *mutexes)
 {
 	
