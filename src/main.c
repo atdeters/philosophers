@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/09 12:21:00 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/09 14:46:49 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,20 @@ void	*daily_routine(void *philo)
 			break;
 		if (!p_log(p->data, p->philo_nb, EAT, p->mutexes))
 			break;
+		p->time_since_meal = time_passed(p->data);
+		p->times_eaten++;
 		usleep(p->data->tte);	
 		pthread_mutex_unlock(&p->mutexes[p->fork_left]);
 		pthread_mutex_unlock(&p->mutexes[p->fork_right]);
-		p->time_since_meal = time_passed(p->data);
-		p->times_eaten++;
 		if (p->times_eaten == p->data->nbte)
 		{
 			p->data->nb_finished_eating++;
 			break;
 		}
-		if (!p_log(p->data, p->philo_nb, SLEEP, p->mutexes))
+		if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
 			break;
 		usleep(p->data->tts);
-		if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
+		if (!p_log(p->data, p->philo_nb, SLEEP, p->mutexes))
 			break;
 	}
 	return (NULL);
@@ -89,6 +89,7 @@ void	*check_death(void *philos)
 			break;
 		if (flag)
 			break;
+		usleep(500);
 	}
 	return (NULL);
 }
