@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/09 08:05:05 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/09 08:08:43 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 	if (nb == p->data->nbp)
 		p->fork_right = 0;
 	else
-		p->fork_right = nb - 1;
+		p->fork_right = nb;
 	return (p);
 }
 
