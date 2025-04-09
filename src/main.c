@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/09 08:08:43 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/09 08:11:53 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 
 // Maybe a good idea to make an extra thread for the dead processing and an extra mutex for the 
 // Printer to not fuck something up because of their confusing names right now
+//! When one philosopher finished all his eating he must unlock his fork, rn we get stuck
 int	main(int ac, char **av)
 {
 	t_data			data;
