@@ -6,14 +6,13 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/08 13:53:18 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/09 08:05:05 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 #include <stdio.h>
 
-//! Needs to stop immideatily when one of the philosopher dies
 void	*daily_routine(void *philo)
 {
 	t_philo *p;
@@ -35,7 +34,7 @@ void	*daily_routine(void *philo)
 			break;
 		if (!p_log(p->data, p->philo_nb, EAT, p->mutexes))
 			break;
-		usleep(p->data->tte);
+		usleep(p->data->tte);	
 		pthread_mutex_unlock(&p->mutexes[p->fork_left]);
 		pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 		p->time_since_meal = time_passed(p->data);
@@ -109,7 +108,7 @@ t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 	if (nb == p->data->nbp)
 		p->fork_right = 0;
 	else
-		p->fork_right = nb;
+		p->fork_right = nb - 1;
 	return (p);
 }
 
