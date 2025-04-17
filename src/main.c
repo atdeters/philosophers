@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/17 19:53:02 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/17 19:56:57 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	*daily_routine(void *philo)
 		pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 		if (p->times_eaten == p->data->nbte)
 		{
-			// p->data->nb_finished_eating++; //! also needs a mutex
+			p->data->nb_finished_eating++; //! also needs a mutex
 			break;
 		}
 		if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
@@ -154,6 +154,8 @@ int	main(int ac, char **av)
 		return (ERR_GTOD);
 
 	// Create a list of forks as mutexes
+	// Also create 3 additional mutexes for printing and some checks etc. (aka figure out what exactly is needed)
+	// Maybe include mutex pointers in the data struct to give them a proper name (but keep them in the array for performance)
 	mutexes = malloc((data.nbp + 2) * sizeof(pthread_mutex_t));
 	memset(mutexes, 0, (data.nbp + 2) * sizeof(pthread_mutex_t));
 
@@ -166,7 +168,7 @@ int	main(int ac, char **av)
 		i++;
 	}
 
-	// Create a list of philosophers as pthreads and start their thread
+	// Create a list of philosophers as pthreads && add an additional thread for the death checker
 	threads = malloc((data.nbp + 1)  * sizeof(pthread_t)); //! Protec + Free
 	memset(threads, 0, (data.nbp + 1) * sizeof(pthread_t));
 	
