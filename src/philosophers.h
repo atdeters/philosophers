@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/08 13:41:21 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/24 16:14:41 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@
 # include <pthread.h>
 # include <stdio.h>
 # include <string.h>
+
+// Macros
+/**
+ * Defines how many mutexes are needed in addition to the forks
+ */
+# define ADD_MUT 3
 
 // ENUMS
 enum				e_errors

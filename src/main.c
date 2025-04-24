@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/24 16:11:53 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/24 16:15:06 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,13 +192,13 @@ int	main(int ac, char **av)
 	// Create a list of forks as mutexes
 	// Also create 3 additional mutexes for printing and some checks etc. (aka figure out what exactly is needed)
 	// Maybe include mutex pointers in the data struct to give them a proper name (but keep them in the array for performance)
-	mutexes = malloc((data.nbp + 3) * sizeof(pthread_mutex_t));
-	memset(mutexes, 0, (data.nbp + 3) * sizeof(pthread_mutex_t));
+	mutexes = malloc((data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
+	memset(mutexes, 0, (data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
 
 	int	i;
 
 	i = 0;
-	while (i < data.nbp + 3)
+	while (i < data.nbp + ADD_MUT)
 	{
 		pthread_mutex_init(&mutexes[i], NULL);
 		i++;
@@ -235,7 +235,7 @@ int	main(int ac, char **av)
 	}
 	// Exit properly
 	i = 0;
-	while (i < data.nbp + 3)
+	while (i < data.nbp + ADD_MUT)
 	{
 		pthread_mutex_destroy(&mutexes[i]);
 		i++;
