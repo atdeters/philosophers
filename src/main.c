@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/24 15:43:39 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/24 16:07:53 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,13 @@ void	*daily_routine(void *philo)
 		else
 			pthread_mutex_lock(&p->mutexes[p->fork_right]);
 		if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
+		{
+			if (p->fork_left < p->fork_right)
+				pthread_mutex_unlock(&p->mutexes[p->fork_left]);
+			else
+				pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 			break;
+		}
 
 		// Take bigger fork
 		if (p->fork_left > p->fork_right)
@@ -34,11 +40,19 @@ void	*daily_routine(void *philo)
 		else
 			pthread_mutex_lock(&p->mutexes[p->fork_right]);
 		if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
+		{
+			pthread_mutex_unlock(&p->mutexes[p->fork_left]);
+			pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 			break;
+		}
 
 		// Eat and update the time since the last meal
 		if (!p_log(p->data, p->philo_nb, EAT, p->mutexes))
+		{
+			pthread_mutex_unlock(&p->mutexes[p->fork_left]);
+			pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 			break;
+		}
 		pthread_mutex_lock(&p->mutexes[p->data->nbp + 2]);
 		p->time_since_meal = time_passed(p->data);
 		pthread_mutex_unlock(&p->mutexes[p->data->nbp + 2]);
@@ -101,13 +115,6 @@ void	*check_death(void *philos)
 				pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp]);
 				pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
 				flag = true;
-				// Open up all the locks
-				int j = 0;
-				while (j < (*ps)->data->nbp + 2)
-				{
-					pthread_mutex_unlock(&(*ps)->mutexes[j]);
-					j++;
-				}
 				break;
 			}
 			i++;
