@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/24 15:22:08 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/24 15:43:39 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,37 +20,60 @@ void	*daily_routine(void *philo)
 	p = (t_philo *)philo;
 	while (1)
 	{
+		// Take smaller fork
 		if (p->fork_left < p->fork_right)
 			pthread_mutex_lock(&p->mutexes[p->fork_left]);
 		else
 			pthread_mutex_lock(&p->mutexes[p->fork_right]);
 		if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
 			break;
+
+		// Take bigger fork
 		if (p->fork_left > p->fork_right)
 			pthread_mutex_lock(&p->mutexes[p->fork_left]);
 		else
 			pthread_mutex_lock(&p->mutexes[p->fork_right]);
 		if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
 			break;
+
+		// Eat and update the time since the last meal
 		if (!p_log(p->data, p->philo_nb, EAT, p->mutexes))
 			break;
-		p->time_since_meal = time_passed(p->data); //! Maybe needs a lock??
-		usleep(p->data->tte);	
+		pthread_mutex_lock(&p->mutexes[p->data->nbp + 2]);
+		p->time_since_meal = time_passed(p->data);
+		pthread_mutex_unlock(&p->mutexes[p->data->nbp + 2]);
+		usleep(p->data->tte);
 		p->times_eaten++; //? Does not need mutex i think as only one thread uses it
+
+		// Put down both forks at the same time
 		pthread_mutex_unlock(&p->mutexes[p->fork_left]);
 		pthread_mutex_unlock(&p->mutexes[p->fork_right]);
+
+		// If finished, update the number of philosophers that have finished
 		if (p->times_eaten == p->data->nbte)
 		{
 			p->data->nb_finished_eating++; //! also needs a mutex
 			break;
 		}
+
+		// Sleep
 		if (!p_log(p->data, p->philo_nb, SLEEP, p->mutexes))
 			break;
 		usleep(p->data->tts);
+
+		// Think
 		if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
 			break;
 	}
 	return (NULL);
+}
+
+bool	is_p_kil(t_philo **ps, int i)
+{
+	pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 2]);
+	if ((time_passed((*ps)->data) - ps[i]->time_since_meal) >= (unsigned int)(*ps)->data->ttd / 1000)
+		return (pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 2]), true);	
+	return (pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 2]), false);
 }
 
 void	*check_death(void *philos)
@@ -68,7 +91,7 @@ void	*check_death(void *philos)
 		i = 0;
 		while (i < nb)
 		{
-			if ((time_passed((*ps)->data) - ps[i]->time_since_meal) >= (unsigned int)(*ps)->data->ttd / 1000)
+			if (is_p_kil(ps, i))
 			{
 				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
 				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp]);
@@ -156,13 +179,13 @@ int	main(int ac, char **av)
 	// Create a list of forks as mutexes
 	// Also create 3 additional mutexes for printing and some checks etc. (aka figure out what exactly is needed)
 	// Maybe include mutex pointers in the data struct to give them a proper name (but keep them in the array for performance)
-	mutexes = malloc((data.nbp + 2) * sizeof(pthread_mutex_t));
-	memset(mutexes, 0, (data.nbp + 2) * sizeof(pthread_mutex_t));
+	mutexes = malloc((data.nbp + 3) * sizeof(pthread_mutex_t));
+	memset(mutexes, 0, (data.nbp + 3) * sizeof(pthread_mutex_t));
 
 	int	i;
 
 	i = 0;
-	while (i < data.nbp + 2)
+	while (i < data.nbp + 3)
 	{
 		pthread_mutex_init(&mutexes[i], NULL);
 		i++;
@@ -199,7 +222,7 @@ int	main(int ac, char **av)
 	}
 	// Exit properly
 	i = 0;
-	while (i < data.nbp + 2)
+	while (i < data.nbp + 3)
 	{
 		pthread_mutex_destroy(&mutexes[i]);
 		i++;
