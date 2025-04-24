@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/24 16:07:53 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/24 16:11:53 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,17 @@ void	*daily_routine(void *philo)
 	return (NULL);
 }
 
+/**
+ * Check whether a certain philosopher from the
+ * philos array has died already
+ */
 bool	is_p_kil(t_philo **ps, int i)
 {
 	pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 2]);
-	if ((time_passed((*ps)->data) - ps[i]->time_since_meal) >= (unsigned int)(*ps)->data->ttd / 1000)
-		return (pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 2]), true);	
+	if ((time_passed((*ps)->data)
+			- ps[i]->time_since_meal) >= (unsigned int)(*ps)->data->ttd / 1000)
+		return (pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 2]),
+			true);
 	return (pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 2]), false);
 }
 
