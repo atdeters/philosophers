@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/17 19:56:57 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/24 15:22:08 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*daily_routine(void *philo)
 	t_philo *p;
 
 	p = (t_philo *)philo;
-	while (!p->data->is_kil) //! probably need a mutex for the is_kil thats been read here
+	while (1)
 	{
 		if (p->fork_left < p->fork_right)
 			pthread_mutex_lock(&p->mutexes[p->fork_left]);
@@ -34,7 +34,7 @@ void	*daily_routine(void *philo)
 			break;
 		if (!p_log(p->data, p->philo_nb, EAT, p->mutexes))
 			break;
-		p->time_since_meal = time_passed(p->data);
+		p->time_since_meal = time_passed(p->data); //! Maybe needs a lock??
 		usleep(p->data->tte);	
 		p->times_eaten++; //? Does not need mutex i think as only one thread uses it
 		pthread_mutex_unlock(&p->mutexes[p->fork_left]);
@@ -44,10 +44,10 @@ void	*daily_routine(void *philo)
 			p->data->nb_finished_eating++; //! also needs a mutex
 			break;
 		}
-		if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
+		if (!p_log(p->data, p->philo_nb, SLEEP, p->mutexes))
 			break;
 		usleep(p->data->tts);
-		if (!p_log(p->data, p->philo_nb, SLEEP, p->mutexes))
+		if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
 			break;
 	}
 	return (NULL);
