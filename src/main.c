@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/25 17:42:47 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/25 17:43:25 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	*daily_routine(void *philo)
 			pthread_mutex_lock(&p->mutexes[p->fork_right]);
 		if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
 		{
-			if (p->fork_left < p->fork_right)
+			if (p->philo_nb % 2 == 0)
 				pthread_mutex_unlock(&p->mutexes[p->fork_left]);
 			else
 				pthread_mutex_unlock(&p->mutexes[p->fork_right]);
