@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/25 16:29:19 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/25 17:04:41 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,8 +173,6 @@ t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 	return (p);
 }
 
-// Maybe a good idea to make an extra thread for the dead processing and an extra mutex for the 
-// Printer to not fuck something up because of their confusing names right now, also death mutex now
 int	main(int ac, char **av)
 {
 	t_data			data;
@@ -189,9 +187,7 @@ int	main(int ac, char **av)
 	if (gettimeofday(&data.start, NULL) < 0)
 		return (ERR_GTOD);
 
-	// Create a list of forks as mutexes
-	// Also create 3 additional mutexes for printing and some checks etc. (aka figure out what exactly is needed)
-	// Maybe include mutex pointers in the data struct to give them a proper name (but keep them in the array for performance)
+	// Create a list of forks and other mutexes
 	mutexes = malloc((data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
 	memset(mutexes, 0, (data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
 
