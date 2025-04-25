@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:14:34 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/25 16:17:25 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/25 16:31:05 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ bool	p_log(t_data *data, int philo_nb, int action, pthread_mutex_t *mutexes)
 	pthread_mutex_lock(&mutexes[data->nbp + 1]);
 	if (data->is_kil)
 		return (pthread_mutex_unlock(&mutexes[data->nbp + 1]), false);
+	pthread_mutex_unlock(&mutexes[data->nbp + 1]);
 	pthread_mutex_lock(&mutexes[data->nbp]);
 	p_nbr_fd(1, time_passed(data));
 	p_str_fd(1, "\t");
@@ -37,7 +38,6 @@ bool	p_log(t_data *data, int philo_nb, int action, pthread_mutex_t *mutexes)
 		p_str_fd(1, " is thinking\n");
 	if (action == DIE)
 		p_str_fd(1, " died\n");
-	pthread_mutex_unlock(&mutexes[data->nbp + 1]);
 	pthread_mutex_unlock(&mutexes[data->nbp]);
 	return (true);
 }
