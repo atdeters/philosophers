@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/25 17:43:25 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/25 17:59:01 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,30 +147,11 @@ t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 	p->time_since_meal = 0;
 	p->times_eaten = 0;
 	p->mutexes = mutexes;
-	if (p->data->nbp != 2)
-	{
-		if (nb == 1)
-			p->fork_left = p->data->nbp - 1;
-		else
-			p->fork_left = nb - 1;
-		if (nb == p->data->nbp)
-			p->fork_right = 0;
-		else
-			p->fork_right = nb;
-	}
+	if (nb == 1)
+		p->fork_left = p->data->nbp - 1;
 	else
-	{
-		if (nb == 1)
-		{
-			p->fork_left = 1;
-			p->fork_right = 0;
-		}
-		else
-		{
-			p->fork_left = 0;
-			p->fork_right = 1;
-		}
-	}
+		p->fork_left = nb - 2;
+	p->fork_right = nb - 1;
 	return (p);
 }
 
