@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 14:09:54 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 14:22:51 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	*daily_routine(void *philo)
 		p->time_since_meal = time_passed(p->data);
 		pthread_mutex_unlock(&p->mutexes[p->data->nbp + 2]);
 		usleep(p->data->tte);
-		p->times_eaten++; //? Does not need mutex i think as only one thread uses it
+		p->times_eaten++;
 
 		// Put down both forks at the same time
 		pthread_mutex_unlock(&p->mutexes[p->fork_left]);
@@ -177,9 +177,29 @@ t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 	return (p);
 }
 
+void	free_allos(t_philo ***philos, pthread_t **threads, pthread_mutex_t **mutexes)
+{
+	if (*mutexes)
+	{
+		free(*mutexes);
+		*mutexes = NULL;
+	}
+	if (*threads)
+	{
+		free(*threads);
+		*threads = NULL;
+	}
+	if (*philos)
+	{
+		free_philos(*philos);
+		*philos = NULL;
+	}	
+}
+
 int	main(int ac, char **av)
 {
 	t_data			data;
+	//TODO:  Make these part of the data structure so I can easier call their free func
 	t_philo			**philos;
 	pthread_t		*threads;
 	pthread_mutex_t *mutexes;
@@ -242,12 +262,7 @@ int	main(int ac, char **av)
 	}
 
 	// Free all the memory
-	free(mutexes);
-	mutexes = NULL;
-	free(threads);
-	threads = NULL;
-	free_philos(philos);
-	philos = NULL;
+	free_allos(&philos, &threads, &mutexes);
 	if (data.is_kil)
 		return (ERR_IS_KIL);
 	return (0);
