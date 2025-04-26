@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 14:00:59 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 14:09:54 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,9 @@ void	*daily_routine(void *philo)
 		// If finished, update the number of philosophers that have finished
 		if (p->times_eaten == p->data->nbte)
 		{
-			p->data->nb_finished_eating++; //! also needs a mutex
+			pthread_mutex_lock(&p->mutexes[p->data->nbp + 3]);
+			p->data->nb_finished_eating++;
+			pthread_mutex_unlock(&p->mutexes[p->data->nbp + 3]);
 			break;
 		}
 
@@ -107,6 +109,14 @@ bool	is_p_kil(t_philo **ps, int i)
 		return (pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 2]),
 			true);
 	return (pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 2]), false);
+}
+
+bool	everyone_ate(t_philo **philos)
+{
+	pthread_mutex_lock(&(*philos)->mutexes[(*philos)->data->nbp + 3]);
+	if ((*philos)->data->nb_finished_eating == (*philos)->data->nbp)
+		return (pthread_mutex_unlock(&(*philos)->mutexes[(*philos)->data->nbp + 3]), true);
+	return (pthread_mutex_unlock(&(*philos)->mutexes[(*philos)->data->nbp + 3]), false);
 }
 
 void	*check_death(void *philos)
@@ -140,7 +150,7 @@ void	*check_death(void *philos)
 		}
 		if (flag)
 			break;
-		if ((*ps)->data->nb_finished_eating == (*ps)->data->nbp)
+		if (everyone_ate(ps))
 			break;
 		usleep(500);
 	}

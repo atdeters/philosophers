@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 13:56:00 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 14:04:17 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 /**
  * Defines how many mutexes are needed in addition to the forks
  */
-# define ADD_MUT 3
+# define ADD_MUT 4
 
 // ENUMS
 enum				e_errors
