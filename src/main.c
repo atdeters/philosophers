@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 23:35:09 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 00:03:56 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,18 @@ void	destroy_mutex_nb(pthread_mutex_t *mutexes, int nb)
 	}
 }
 
+void	destroy_threads_nb(pthread_t *threads, int nb)
+{
+	int	i;
+
+	i = 0;
+	while (i < nb)
+	{
+		pthread_join(threads[i], NULL);
+		i++;
+	}
+}
+
 void	free_allos(t_philo ***philos, pthread_t **threads, pthread_mutex_t **mutexes, int nbp)
 {
 	if (mutexes && *mutexes)
@@ -268,24 +280,35 @@ int	main(int ac, char **av)
 
 	// Creation of the threads
 	i = 0;
+	pthread_mutex_lock(&mutexes[data.nbp + 1]);
 	while (i < data.nbp)
 	{
-		pthread_create(&threads[i], NULL, &daily_routine, philos[i]); //! Protec
+		if (i == 3 || pthread_create(&threads[i], NULL, &daily_routine, philos[i]))
+		{
+			p_err(ERR_THREAD_CREATE);
+			data.is_kil = true;
+			pthread_mutex_unlock(&mutexes[data.nbp + 1]);
+			destroy_threads_nb(threads, i);
+			destroy_mutex_nb(mutexes, data.nbp + ADD_MUT);
+			free_allos(&philos, &threads, &mutexes, data.nbp);
+			return (ERR_THREAD_CREATE);
+		}
 		i++;
 	}
-	pthread_create(&threads[data.nbp], NULL, &check_death, philos); //! Protec
-
-	// Wait for all the threads in the main process
-	i = 0;
-	while (i < data.nbp + 1)
+	if (pthread_create(&threads[data.nbp], NULL, &check_death, philos))
 	{
-		pthread_join(threads[i], NULL);
-		i++;
+		p_err(ERR_THREAD_CREATE);
+		data.is_kil = true;
+		pthread_mutex_unlock(&mutexes[data.nbp + 1]);
+		destroy_threads_nb(threads, data.nbp + 1);
+		destroy_mutex_nb(mutexes, data.nbp + ADD_MUT);
+		free_allos(&philos, &threads, &mutexes, data.nbp);
+		return (ERR_THREAD_CREATE);
 	}
+	pthread_mutex_unlock(&mutexes[data.nbp + 1]);
 
-	// Exit properly
-	
-	// Free all the memory
+	// Exit program cleanly
+	destroy_threads_nb(threads, data.nbp + 1);
 	destroy_mutex_nb(mutexes, data.nbp + ADD_MUT);
 	free_allos(&philos, &threads, &mutexes, data.nbp);
 	if (data.is_kil)

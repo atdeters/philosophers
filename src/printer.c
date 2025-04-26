@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:14:34 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 23:34:09 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 23:39:53 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	p_err(int code)
 		p_str_fd(2, "Simulation needs at least 1 philosopher\n");
 	if (code == ERR_MUT_INIT)
 		p_str_fd(2, "Initialization of mutexes failed!\n");
+	if (code == ERR_THREAD_CREATE)
+		p_str_fd(2, "Thread creation failed!\n");
 	return (code);
 }
 
