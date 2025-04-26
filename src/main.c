@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 13:53:52 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 14:00:59 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	*daily_routine(void *philo)
 		if (p->data->nbp == 1)
 		{
 			usleep(p->data->ttd);
+			pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 			break;
 		}
 
