@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/27 00:54:52 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 00:59:54 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,65 +97,6 @@ void	*daily_routine(void *philo)
 	return (NULL);
 }
 
-/**
- * Check whether a certain philosopher from the
- * philos array has died already
- */
-bool	is_p_kil(t_philo **ps, int i)
-{
-	pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 2]);
-	if ((time_passed((*ps)->data)
-			- ps[i]->time_since_meal) >= (unsigned int)(*ps)->data->ttd / 1000)
-		return (pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 2]),
-			true);
-	return (pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 2]), false);
-}
-
-bool	everyone_ate(t_philo **philos)
-{
-	pthread_mutex_lock(&(*philos)->mutexes[(*philos)->data->nbp + 3]);
-	if ((*philos)->data->nb_finished_eating == (*philos)->data->nbp)
-		return (pthread_mutex_unlock(&(*philos)->mutexes[(*philos)->data->nbp + 3]), true);
-	return (pthread_mutex_unlock(&(*philos)->mutexes[(*philos)->data->nbp + 3]), false);
-}
-
-void	*check_death(void *philos)
-{
-	t_philo	**ps;
-	int		i;
-	bool	flag;
-
-	ps = (t_philo **)philos;
-	flag = false;
-	while (1)
-	{
-		i = 0;
-		while (i < (*ps)->data->nbp)
-		{
-			if (is_p_kil(ps, i))
-			{
-				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
-				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp]);
-				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 2]);
-				printf("%d\t%d died\n", time_passed((*ps)->data), i + 1);
-				pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 2]);
-				pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp]);
-				(*ps)->data->is_kil = true;
-				flag = true;
-				pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
-				break;
-			}
-			i++;
-		}
-		if (flag)
-			break;
-		if (everyone_ate(ps))
-			break;
-		usleep(500);
-	}
-	return (NULL);
-}
-
 int	main(int ac, char **av)
 {
 	int		i;
@@ -165,41 +106,10 @@ int	main(int ac, char **av)
 	philos = NULL;
 	if (init_prog(&data, ac, av))
 		return (p_err(data.error));
-
-	// Start timer
 	if (gettimeofday(&data.start, NULL) < 0)
 		return (ERR_GTOD);
-
-	// All the mallocs
-	// data.mutexes = malloc((data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
-	// if (!data.mutexes)
-	// 	return (ERR_MALLOC);
-	// memset(data.mutexes, 0, (data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
-	// data.threads = malloc((data.nbp + 1)  * sizeof(pthread_t));
-	// if (!data.threads)
-	// 	return (free_allos(&philos, &data.threads, &data.mutexes, 0), ERR_MALLOC);
-	// memset(data.threads, 0, (data.nbp + 1) * sizeof(pthread_t));
-
-	// philos = malloc((data.nbp + 1) * sizeof(t_philo *));
-	// if (!philos)
-	// 	return (free_allos(&philos, &data.threads, &data.mutexes, 0), ERR_MALLOC);
-	// memset(philos, 0, (data.nbp + 1) * sizeof(t_philo *));
-	// philos[data.nbp] = NULL;
-	// i = 0;
-	// while (i < data.nbp)
-	// {
-	// 	philos[i] = constructor(&data, data.mutexes, i + 1);
-	// 	if (!philos[i])
-	// 		return (free_allos(&philos, &data.threads, &data.mutexes, i - 1), ERR_MALLOC);
-	// 	i++;
-	// }
-	
 	if (!allocate_space(&philos, &data))
 		return (ERR_MALLOC);
-	
-
-	// Create mutexes like the following for more readability
-	// data.mut_time_passed = &mutexes[data.nbp + 2];
 
 	// Creation of the mutexes
 	i = 0;

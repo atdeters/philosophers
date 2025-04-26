@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/27 00:55:41 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 01:05:11 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,15 @@ typedef struct s_atoi_data
  * characters, or no digits after `+` or `-`).
  */
 int					check_overflow(char *str);
+
+// check.c - Checking of current state
+/**
+ * Check whether a certain philosopher from the
+ * philos array has died already
+ */
+bool				is_p_kil(t_philo **ps, int i);
+bool				everyone_ate(t_philo **philos);
+void				*check_death(void *philos);
 
 // free.c
 void				free_philos(t_philo **lst, int nbp);
