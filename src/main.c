@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 14:44:49 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 14:54:42 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,23 +239,22 @@ int	main(int ac, char **av)
 		i++;
 	}
 
+	// Creation of the mutexes
 	i = 0;
 	while (i < data.nbp + ADD_MUT)
 	{
-		pthread_mutex_init(&mutexes[i], NULL);
+		pthread_mutex_init(&mutexes[i], NULL); //! Protec
 		i++;
 	}
 
+	// Creation of the threads
 	i = 0;
 	while (i < data.nbp)
 	{
 		pthread_create(&threads[i], NULL, &daily_routine, philos[i]); //! Protec
 		i++;
 	}
-
-	// Create a new thread that constantly checks wether the philosophers are still alive
 	pthread_create(&threads[data.nbp], NULL, &check_death, philos); //! Protec
-	//! If the creation of a thread fails than all of the previous ones need to be joined before exiting
 
 	// Wait for all the threads in the main process
 	i = 0;
