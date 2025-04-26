@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 01:02:24 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/27 01:04:21 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 01:41:38 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,7 @@ void	*check_death(void *philos)
 			{
 				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
 				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp]);
-				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 2]);
 				printf("%d\t%d died\n", time_passed((*ps)->data), i + 1);
-				pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 2]);
 				pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp]);
 				(*ps)->data->is_kil = true;
 				flag = true;
