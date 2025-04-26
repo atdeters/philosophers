@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/27 00:18:59 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 00:45:17 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,19 +219,38 @@ void	free_allos(t_philo ***philos, pthread_t **threads, pthread_mutex_t **mutexe
 	}	
 }
 
+int	allocate_space(t_philo ***philos, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	data->mutexes = malloc((data->nbp + ADD_MUT) * sizeof(pthread_mutex_t));
+	if (!data->mutexes)
+		return (data->error = ERR_MALLOC, 0);
+	data->threads = malloc((data->nbp + 1)  * sizeof(pthread_t));
+	if (!data->threads)
+		return (free_allos(philos, &data->threads, &data->mutexes, 0), data->error = ERR_MALLOC, 0);
+	*philos = malloc((data->nbp + 1) * sizeof(t_philo *));
+	if (!*philos)
+		return (free_allos(philos, &data->threads, &data->mutexes, 0), data->error = ERR_MALLOC, 0);
+	(*philos)[data->nbp] = NULL;
+	while (i < data->nbp)
+	{
+		(*philos)[i] = constructor(data, data->mutexes, i + 1);
+		if (!(*philos)[i])
+			return (free_allos(philos, &data->threads, &data->mutexes, i - 1), data->error = ERR_MALLOC, 0);
+		i++;
+	}
+	return (1);
+}
+
 int	main(int ac, char **av)
 {
-	t_data			data;
-	int				i;
-	//TODO:  Make these part of the data structure so I can easier call their free func and init them
-	t_philo			**philos;
-	// pthread_t		*threads;
-	// pthread_mutex_t *mutexes;
+	int		i;
+	t_data	data;
+	t_philo	**philos;
 
 	philos = NULL;
-	data.threads = NULL;
-	data.mutexes = NULL;
-	
 	if (init_prog(&data, ac, av))
 		return (p_err(data.error));
 
@@ -240,27 +259,32 @@ int	main(int ac, char **av)
 		return (ERR_GTOD);
 
 	// All the mallocs
-	data.mutexes = malloc((data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
-	if (!data.mutexes)
-		return (ERR_MALLOC);
-	memset(data.mutexes, 0, (data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
-	data.threads = malloc((data.nbp + 1)  * sizeof(pthread_t));
-	if (!data.threads)
-		return (free_allos(&philos, &data.threads, &data.mutexes, 0), ERR_MALLOC);
-	memset(data.threads, 0, (data.nbp + 1) * sizeof(pthread_t));
-	philos = malloc((data.nbp + 1) * sizeof(t_philo *));
-	if (!philos)
-		return (free_allos(&philos, &data.threads, &data.mutexes, 0), ERR_MALLOC);
-	memset(philos, 0, (data.nbp + 1) * sizeof(t_philo *));
-	philos[data.nbp] = NULL;
-	i = 0;
-	while (i < data.nbp)
-	{
-		philos[i] = constructor(&data, data.mutexes, i + 1);
-		if (!philos[i])
-			return (free_allos(&philos, &data.threads, &data.mutexes, i - 1), ERR_MALLOC);
-		i++;
-	}
+	// data.mutexes = malloc((data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
+	// if (!data.mutexes)
+	// 	return (ERR_MALLOC);
+	// memset(data.mutexes, 0, (data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
+	// data.threads = malloc((data.nbp + 1)  * sizeof(pthread_t));
+	// if (!data.threads)
+	// 	return (free_allos(&philos, &data.threads, &data.mutexes, 0), ERR_MALLOC);
+	// memset(data.threads, 0, (data.nbp + 1) * sizeof(pthread_t));
+
+	// philos = malloc((data.nbp + 1) * sizeof(t_philo *));
+	// if (!philos)
+	// 	return (free_allos(&philos, &data.threads, &data.mutexes, 0), ERR_MALLOC);
+	// memset(philos, 0, (data.nbp + 1) * sizeof(t_philo *));
+	// philos[data.nbp] = NULL;
+	// i = 0;
+	// while (i < data.nbp)
+	// {
+	// 	philos[i] = constructor(&data, data.mutexes, i + 1);
+	// 	if (!philos[i])
+	// 		return (free_allos(&philos, &data.threads, &data.mutexes, i - 1), ERR_MALLOC);
+	// 	i++;
+	// }
+	
+	if (!allocate_space(&philos, &data))
+		return (data.error);
+	
 
 	// Create mutexes like the following for more readability
 	// data.mut_time_passed = &mutexes[data.nbp + 2];

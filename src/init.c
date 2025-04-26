@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 18:33:31 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 13:56:49 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 00:27:01 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,7 @@ int	init_prog(t_data *data, int ac, char **av)
 		return (data->error);
 	data->is_kil = false;
 	data->nb_finished_eating = 0;
+	data->threads = NULL;
+	data->mutexes = NULL;
 	return (0);
 }
