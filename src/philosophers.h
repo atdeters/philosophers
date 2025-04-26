@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/27 01:05:11 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 01:57:07 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,10 @@ typedef struct s_data
 	struct timeval	curr;
 	unsigned int	elapsed;
 	pthread_t		*threads;
-	pthread_mutex_t *mutexes;
-	// t_philo			**philos;
-	// pthread_mutex_t *mut_time_passed;
+	pthread_mutex_t	*mutexes;
 }					t_data;
 
-typedef struct	s_philo
+typedef struct s_philo
 {
 	t_data			*data;
 	unsigned int	time_since_meal;
@@ -120,7 +118,6 @@ typedef struct	s_philo
 	int				fork_right;
 	pthread_mutex_t	*mutexes;
 }				t_philo;
-
 
 typedef struct s_atoi_data
 {
@@ -177,7 +174,8 @@ void				*check_death(void *philos);
 void				free_philos(t_philo **lst, int nbp);
 void				destroy_mutex_nb(pthread_mutex_t *mutexes, int nb);
 void				destroy_threads_nb(pthread_t *threads, int nb);
-void				free_allos(t_philo ***philos, pthread_t **threads, pthread_mutex_t **mutexes, int nbp);
+void				free_allos(t_philo ***philos, pthread_t **threads,
+						pthread_mutex_t **mutexes, int nbp);
 
 // helpers.c
 int					ft_strlen(char *str);
@@ -210,7 +208,8 @@ int					ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // init.c
 int					init_prog(t_data *data, int ac, char **av);
-t_philo				*constructor(t_data *data, pthread_mutex_t *mutexes, int nb);
+t_philo				*constructor(t_data *data, pthread_mutex_t *mutexes,
+						int nb);
 /**
  * Already prints the error message for malloc error.
  * This does not have to be done within the main function
@@ -218,7 +217,8 @@ t_philo				*constructor(t_data *data, pthread_mutex_t *mutexes, int nb);
 int					allocate_space(t_philo ***philos, t_data *data);
 
 // input.c
-int					check_arg(t_data *data, char *input, int *value, bool is_time);
+int					check_arg(t_data *data, char *input, int *value,
+						bool is_time);
 int					parse_args(t_data *data, int ac, char **av);
 
 // printer.c
@@ -229,7 +229,8 @@ void				p_str_fd(int fd, char *str);
 /**
  * @brief Prints a log for every action of any philosopher
  */
-bool				p_log(t_data *data, int philo_nb, int action, pthread_mutex_t *mutexes);
+bool				p_log(t_data *data, int philo_nb, int action,
+						pthread_mutex_t *mutexes);
 int					p_err(int code);
 int					p_err_arg(int code, char *arg);
 
