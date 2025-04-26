@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 01:02:24 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/27 01:41:38 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 01:46:04 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,7 @@ void	*check_death(void *philos)
 			}
 			i++;
 		}
-		if (flag)
-			break ;
-		if (everyone_ate(ps))
+		if (flag || everyone_ate(ps))
 			break ;
 		usleep(500);
 	}
