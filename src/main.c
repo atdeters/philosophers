@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 15:29:42 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 15:42:41 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,6 +237,9 @@ int	main(int ac, char **av)
 			return (free_allos(&philos, &threads, &mutexes, i - 1), ERR_MALLOC);
 		i++;
 	}
+
+	// Create mutexes like the following for more readability
+	// data.mut_time_passed = &mutexes[data.nbp + 2];
 
 	// Creation of the mutexes
 	i = 0;
