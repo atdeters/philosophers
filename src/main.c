@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 14:22:51 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 14:30:20 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,11 +199,15 @@ void	free_allos(t_philo ***philos, pthread_t **threads, pthread_mutex_t **mutexe
 int	main(int ac, char **av)
 {
 	t_data			data;
-	//TODO:  Make these part of the data structure so I can easier call their free func
+	//TODO:  Make these part of the data structure so I can easier call their free func and init them
 	t_philo			**philos;
 	pthread_t		*threads;
 	pthread_mutex_t *mutexes;
 
+	philos = NULL;
+	threads = NULL;
+	mutexes = NULL;
+	
 	if (init_prog(&data, ac, av))
 		return (p_err(data.error));
 
@@ -214,8 +218,25 @@ int	main(int ac, char **av)
 	// Create a list of forks and other mutexes
 	mutexes = malloc((data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
 	memset(mutexes, 0, (data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
-
+	
+	// Create a list of philosophers as pthreads && add an additional thread for the death checker
+	threads = malloc((data.nbp + 1)  * sizeof(pthread_t)); //! Protec + Free
+	memset(threads, 0, (data.nbp + 1) * sizeof(pthread_t));
+	
+	philos = malloc((data.nbp + 1) * sizeof(t_philo *)); //! Protec + Free
+	memset(philos, 0, (data.nbp + 1) * sizeof(t_philo *));
+	philos[data.nbp] = NULL;
+	
 	int	i;
+
+	i = 0;
+	while (i < data.nbp)
+	{
+		philos[i] = constructor(&data, mutexes, i + 1);
+		if (!philos[i])
+			return (ERR_MALLOC); //! Must free everything
+		i++;
+	}
 
 	i = 0;
 	while (i < data.nbp + ADD_MUT)
@@ -224,20 +245,9 @@ int	main(int ac, char **av)
 		i++;
 	}
 
-	// Create a list of philosophers as pthreads && add an additional thread for the death checker
-	threads = malloc((data.nbp + 1)  * sizeof(pthread_t)); //! Protec + Free
-	memset(threads, 0, (data.nbp + 1) * sizeof(pthread_t));
-	
-	philos = malloc((data.nbp + 1) * sizeof(t_philo *)); //! Protec + Free
-	memset(philos, 0, (data.nbp + 1) * sizeof(t_philo *));
-	philos[data.nbp] = NULL;
-
 	i = 0;
 	while (i < data.nbp)
 	{
-		philos[i] = constructor(&data, mutexes, i + 1);
-		if (!philos[i])
-			return (ERR_MALLOC); //! Must free everything
 		pthread_create(&threads[i], NULL, &daily_routine, philos[i]); //! Protec
 		i++;
 	}
