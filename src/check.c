@@ -12,32 +12,35 @@
 
 #include "philosophers.h"
 
-/**
- * Check whether a certain philosopher from the
- * philos array has died already
- */
-bool is_p_kil(t_philo **ps, int i)
+bool	is_p_kil(t_philo **ps, int i)
 {
+	unsigned int	passed_time;
+
 	pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 2]);
-	if ((time_passed((*ps)->data) - ps[i]->time_since_meal) >= (unsigned int)(*ps)->data->ttd / 1000)
+	passed_time = (time_passed((*ps)->data) - ps[i]->time_since_meal);
+	if (passed_time >= (unsigned int)(*ps)->data->ttd / 1000)
 		return (pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 2]),
-				true);
+			true);
 	return (pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 2]), false);
 }
 
-bool everyone_ate(t_philo **philos)
+bool	everyone_ate(t_philo **philos)
 {
 	pthread_mutex_lock(&(*philos)->mutexes[(*philos)->data->nbp + 3]);
 	if ((*philos)->data->nb_finished_eating == (*philos)->data->nbp)
-		return (pthread_mutex_unlock(&(*philos)->mutexes[(*philos)->data->nbp + 3]), true);
-	return (pthread_mutex_unlock(&(*philos)->mutexes[(*philos)->data->nbp + 3]), false);
+	{
+		pthread_mutex_unlock(&(*philos)->mutexes[(*philos)->data->nbp + 3]);
+		return (true);
+	}
+	pthread_mutex_unlock(&(*philos)->mutexes[(*philos)->data->nbp + 3]);
+	return (false);
 }
 
-void *check_death(void *philos)
+void	*check_death(void *philos)
 {
-	t_philo **ps;
-	int i;
-	bool flag;
+	t_philo	**ps;
+	int		i;
+	bool	flag;
 
 	ps = (t_philo **)philos;
 	flag = false;
@@ -57,14 +60,14 @@ void *check_death(void *philos)
 				(*ps)->data->is_kil = true;
 				flag = true;
 				pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
-				break;
+				break ;
 			}
 			i++;
 		}
 		if (flag)
-			break;
+			break ;
 		if (everyone_ate(ps))
-			break;
+			break ;
 		usleep(500);
 	}
 	return (NULL);
