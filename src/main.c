@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 13:41:06 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 13:46:05 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	*daily_routine(void *philo)
 		}
 
 		// Special case for only having one philosopher
-		if (p->philo_nb == 1)
+		if (p->data->nbp == 1)
 		{
 			usleep(p->data->ttd);
 			break;
