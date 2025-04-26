@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/27 00:45:17 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 00:49:46 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,10 @@ void	free_allos(t_philo ***philos, pthread_t **threads, pthread_mutex_t **mutexe
 	}	
 }
 
+/**
+ * Already prints the error message for malloc error.
+ * This does not have to be done within the main function
+ */
 int	allocate_space(t_philo ***philos, t_data *data)
 {
 	int	i;
@@ -226,22 +230,25 @@ int	allocate_space(t_philo ***philos, t_data *data)
 	i = 0;
 	data->mutexes = malloc((data->nbp + ADD_MUT) * sizeof(pthread_mutex_t));
 	if (!data->mutexes)
-		return (data->error = ERR_MALLOC, 0);
-	data->threads = malloc((data->nbp + 1)  * sizeof(pthread_t));
+		return (0);
+	data->threads = malloc((data->nbp + 1) * sizeof(pthread_t));
 	if (!data->threads)
-		return (free_allos(philos, &data->threads, &data->mutexes, 0), data->error = ERR_MALLOC, 0);
+		return (free_allos(philos, &data->threads, &data->mutexes, 0), 0);
 	*philos = malloc((data->nbp + 1) * sizeof(t_philo *));
 	if (!*philos)
-		return (free_allos(philos, &data->threads, &data->mutexes, 0), data->error = ERR_MALLOC, 0);
+		return (free_allos(philos, &data->threads, &data->mutexes, 0), 0);
 	(*philos)[data->nbp] = NULL;
 	while (i < data->nbp)
 	{
 		(*philos)[i] = constructor(data, data->mutexes, i + 1);
 		if (!(*philos)[i])
-			return (free_allos(philos, &data->threads, &data->mutexes, i - 1), data->error = ERR_MALLOC, 0);
+		{
+			free_allos(philos, &data->threads, &data->mutexes, i - 1);
+			return (0);
+		}
 		i++;
 	}
-	return (1);
+	return (p_err(ERR_MALLOC), 1);
 }
 
 int	main(int ac, char **av)
@@ -283,7 +290,7 @@ int	main(int ac, char **av)
 	// }
 	
 	if (!allocate_space(&philos, &data))
-		return (data.error);
+		return (ERR_MALLOC);
 	
 
 	// Create mutexes like the following for more readability
