@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 14:30:20 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 14:44:49 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,21 +177,21 @@ t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 	return (p);
 }
 
-void	free_allos(t_philo ***philos, pthread_t **threads, pthread_mutex_t **mutexes)
+void	free_allos(t_philo ***philos, pthread_t **threads, pthread_mutex_t **mutexes, int nbp)
 {
-	if (*mutexes)
+	if (mutexes && *mutexes)
 	{
 		free(*mutexes);
 		*mutexes = NULL;
 	}
-	if (*threads)
+	if (threads && *threads)
 	{
 		free(*threads);
 		*threads = NULL;
 	}
-	if (*philos)
+	if (philos && *philos)
 	{
-		free_philos(*philos);
+		free_philos(*philos, nbp);
 		*philos = NULL;
 	}	
 }
@@ -199,6 +199,7 @@ void	free_allos(t_philo ***philos, pthread_t **threads, pthread_mutex_t **mutexe
 int	main(int ac, char **av)
 {
 	t_data			data;
+	int				i;
 	//TODO:  Make these part of the data structure so I can easier call their free func and init them
 	t_philo			**philos;
 	pthread_t		*threads;
@@ -215,26 +216,26 @@ int	main(int ac, char **av)
 	if (gettimeofday(&data.start, NULL) < 0)
 		return (ERR_GTOD);
 
-	// Create a list of forks and other mutexes
+	// All the mallocs
 	mutexes = malloc((data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
+	if (!mutexes)
+		return (ERR_MALLOC);
 	memset(mutexes, 0, (data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
-	
-	// Create a list of philosophers as pthreads && add an additional thread for the death checker
-	threads = malloc((data.nbp + 1)  * sizeof(pthread_t)); //! Protec + Free
+	threads = malloc((data.nbp + 1)  * sizeof(pthread_t));
+	if (!threads)
+		return (free_allos(&philos, &threads, &mutexes, 0), ERR_MALLOC);
 	memset(threads, 0, (data.nbp + 1) * sizeof(pthread_t));
-	
-	philos = malloc((data.nbp + 1) * sizeof(t_philo *)); //! Protec + Free
+	philos = malloc((data.nbp + 1) * sizeof(t_philo *));
+	if (!philos)
+		return (free_allos(&philos, &threads, &mutexes, 0), ERR_MALLOC);
 	memset(philos, 0, (data.nbp + 1) * sizeof(t_philo *));
 	philos[data.nbp] = NULL;
-	
-	int	i;
-
 	i = 0;
 	while (i < data.nbp)
 	{
 		philos[i] = constructor(&data, mutexes, i + 1);
 		if (!philos[i])
-			return (ERR_MALLOC); //! Must free everything
+			return (free_allos(&philos, &threads, &mutexes, i - 1), ERR_MALLOC);
 		i++;
 	}
 
@@ -272,7 +273,7 @@ int	main(int ac, char **av)
 	}
 
 	// Free all the memory
-	free_allos(&philos, &threads, &mutexes);
+	free_allos(&philos, &threads, &mutexes, data.nbp);
 	if (data.is_kil)
 		return (ERR_IS_KIL);
 	return (0);

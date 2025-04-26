@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 14:04:17 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 14:43:13 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ typedef struct s_atoi_data
 int					check_overflow(char *str);
 
 // free.c
-void				free_philos(t_philo **lst);
+void				free_philos(t_philo **lst, int nbp);
 
 // helpers.c
 int					ft_strlen(char *str);
@@ -191,7 +191,6 @@ int					ft_isdigit(int c);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 void				free_mutexes(pthread_mutex_t **lst);
 void				free_threads(pthread_t **lst);
-void				free_philos(t_philo **lst);
 
 // init.c
 int					check_arg(t_data *data, char *input, int *value, bool is_time);
