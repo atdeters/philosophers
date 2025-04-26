@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 23:39:14 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 00:19:47 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,10 @@ typedef struct s_data
 	struct timeval	start;
 	struct timeval	curr;
 	unsigned int	elapsed;
-	pthread_mutex_t *mut_time_passed;
+	pthread_t		*threads;
+	pthread_mutex_t *mutexes;
+	// t_philo			**philos;
+	// pthread_mutex_t *mut_time_passed;
 }					t_data;
 
 typedef struct	s_philo

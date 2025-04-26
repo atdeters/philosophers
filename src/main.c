@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/27 00:03:56 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 00:18:59 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,12 +225,12 @@ int	main(int ac, char **av)
 	int				i;
 	//TODO:  Make these part of the data structure so I can easier call their free func and init them
 	t_philo			**philos;
-	pthread_t		*threads;
-	pthread_mutex_t *mutexes;
+	// pthread_t		*threads;
+	// pthread_mutex_t *mutexes;
 
 	philos = NULL;
-	threads = NULL;
-	mutexes = NULL;
+	data.threads = NULL;
+	data.mutexes = NULL;
 	
 	if (init_prog(&data, ac, av))
 		return (p_err(data.error));
@@ -240,25 +240,25 @@ int	main(int ac, char **av)
 		return (ERR_GTOD);
 
 	// All the mallocs
-	mutexes = malloc((data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
-	if (!mutexes)
+	data.mutexes = malloc((data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
+	if (!data.mutexes)
 		return (ERR_MALLOC);
-	memset(mutexes, 0, (data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
-	threads = malloc((data.nbp + 1)  * sizeof(pthread_t));
-	if (!threads)
-		return (free_allos(&philos, &threads, &mutexes, 0), ERR_MALLOC);
-	memset(threads, 0, (data.nbp + 1) * sizeof(pthread_t));
+	memset(data.mutexes, 0, (data.nbp + ADD_MUT) * sizeof(pthread_mutex_t));
+	data.threads = malloc((data.nbp + 1)  * sizeof(pthread_t));
+	if (!data.threads)
+		return (free_allos(&philos, &data.threads, &data.mutexes, 0), ERR_MALLOC);
+	memset(data.threads, 0, (data.nbp + 1) * sizeof(pthread_t));
 	philos = malloc((data.nbp + 1) * sizeof(t_philo *));
 	if (!philos)
-		return (free_allos(&philos, &threads, &mutexes, 0), ERR_MALLOC);
+		return (free_allos(&philos, &data.threads, &data.mutexes, 0), ERR_MALLOC);
 	memset(philos, 0, (data.nbp + 1) * sizeof(t_philo *));
 	philos[data.nbp] = NULL;
 	i = 0;
 	while (i < data.nbp)
 	{
-		philos[i] = constructor(&data, mutexes, i + 1);
+		philos[i] = constructor(&data, data.mutexes, i + 1);
 		if (!philos[i])
-			return (free_allos(&philos, &threads, &mutexes, i - 1), ERR_MALLOC);
+			return (free_allos(&philos, &data.threads, &data.mutexes, i - 1), ERR_MALLOC);
 		i++;
 	}
 
@@ -269,10 +269,10 @@ int	main(int ac, char **av)
 	i = 0;
 	while (i < data.nbp + ADD_MUT)
 	{
-		if (pthread_mutex_init(&mutexes[i], NULL))
+		if (pthread_mutex_init(&data.mutexes[i], NULL))
 		{
-			destroy_mutex_nb(mutexes, i);
-			free_allos(&philos, &threads, &mutexes, data.nbp);
+			destroy_mutex_nb(data.mutexes, i);
+			free_allos(&philos, &data.threads, &data.mutexes, data.nbp);
 			return (p_err(ERR_MUT_INIT));
 		}
 		i++;
@@ -280,37 +280,37 @@ int	main(int ac, char **av)
 
 	// Creation of the threads
 	i = 0;
-	pthread_mutex_lock(&mutexes[data.nbp + 1]);
+	pthread_mutex_lock(&data.mutexes[data.nbp + 1]);
 	while (i < data.nbp)
 	{
-		if (i == 3 || pthread_create(&threads[i], NULL, &daily_routine, philos[i]))
+		if (pthread_create(&data.threads[i], NULL, &daily_routine, philos[i]))
 		{
 			p_err(ERR_THREAD_CREATE);
 			data.is_kil = true;
-			pthread_mutex_unlock(&mutexes[data.nbp + 1]);
-			destroy_threads_nb(threads, i);
-			destroy_mutex_nb(mutexes, data.nbp + ADD_MUT);
-			free_allos(&philos, &threads, &mutexes, data.nbp);
+			pthread_mutex_unlock(&data.mutexes[data.nbp + 1]);
+			destroy_threads_nb(data.threads, i);
+			destroy_mutex_nb(data.mutexes, data.nbp + ADD_MUT);
+			free_allos(&philos, &data.threads, &data.mutexes, data.nbp);
 			return (ERR_THREAD_CREATE);
 		}
 		i++;
 	}
-	if (pthread_create(&threads[data.nbp], NULL, &check_death, philos))
+	if (pthread_create(&data.threads[data.nbp], NULL, &check_death, philos))
 	{
 		p_err(ERR_THREAD_CREATE);
 		data.is_kil = true;
-		pthread_mutex_unlock(&mutexes[data.nbp + 1]);
-		destroy_threads_nb(threads, data.nbp + 1);
-		destroy_mutex_nb(mutexes, data.nbp + ADD_MUT);
-		free_allos(&philos, &threads, &mutexes, data.nbp);
+		pthread_mutex_unlock(&data.mutexes[data.nbp + 1]);
+		destroy_threads_nb(data.threads, data.nbp + 1);
+		destroy_mutex_nb(data.mutexes, data.nbp + ADD_MUT);
+		free_allos(&philos, &data.threads, &data.mutexes, data.nbp);
 		return (ERR_THREAD_CREATE);
 	}
-	pthread_mutex_unlock(&mutexes[data.nbp + 1]);
+	pthread_mutex_unlock(&data.mutexes[data.nbp + 1]);
 
 	// Exit program cleanly
-	destroy_threads_nb(threads, data.nbp + 1);
-	destroy_mutex_nb(mutexes, data.nbp + ADD_MUT);
-	free_allos(&philos, &threads, &mutexes, data.nbp);
+	destroy_threads_nb(data.threads, data.nbp + 1);
+	destroy_mutex_nb(data.mutexes, data.nbp + ADD_MUT);
+	free_allos(&philos, &data.threads, &data.mutexes, data.nbp);
 	if (data.is_kil)
 		return (ERR_IS_KIL);
 	return (0);
