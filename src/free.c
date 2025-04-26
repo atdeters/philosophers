@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 12:26:11 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/26 14:42:23 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 00:55:02 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,47 @@ void	free_philos(t_philo **lst, int nbp)
 	}
 	free(lst);
 	lst = NULL;
+}
+
+void	destroy_mutex_nb(pthread_mutex_t *mutexes, int nb)
+{
+	int	i;
+
+	i = 0;
+	while (i < nb)
+	{
+		pthread_mutex_destroy(&mutexes[i]);
+		i++;
+	}
+}
+
+void	destroy_threads_nb(pthread_t *threads, int nb)
+{
+	int	i;
+
+	i = 0;
+	while (i < nb)
+	{
+		pthread_join(threads[i], NULL);
+		i++;
+	}
+}
+
+void	free_allos(t_philo ***philos, pthread_t **threads, pthread_mutex_t **mutexes, int nbp)
+{
+	if (mutexes && *mutexes)
+	{
+		free(*mutexes);
+		*mutexes = NULL;
+	}
+	if (threads && *threads)
+	{
+		free(*threads);
+		*threads = NULL;
+	}
+	if (philos && *philos)
+	{
+		free_philos(*philos, nbp);
+		*philos = NULL;
+	}	
 }

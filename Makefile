@@ -7,7 +7,7 @@ LFLAGS		=	-pthread
 
 SRC_FILES	=	main.c helpers.c helpers2.c \
 				printer.c check_overflow.c init.c \
-				free.c
+				free.c input.c
 
 SRCS		=	$(addprefix src/, $(SRC_FILES))
 

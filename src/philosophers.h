@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/27 00:19:47 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 00:55:41 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,9 @@ int					check_overflow(char *str);
 
 // free.c
 void				free_philos(t_philo **lst, int nbp);
+void				destroy_mutex_nb(pthread_mutex_t *mutexes, int nb);
+void				destroy_threads_nb(pthread_t *threads, int nb);
+void				free_allos(t_philo ***philos, pthread_t **threads, pthread_mutex_t **mutexes, int nbp);
 
 // helpers.c
 int					ft_strlen(char *str);
@@ -197,9 +200,17 @@ int					ft_isdigit(int c);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // init.c
+int					init_prog(t_data *data, int ac, char **av);
+t_philo				*constructor(t_data *data, pthread_mutex_t *mutexes, int nb);
+/**
+ * Already prints the error message for malloc error.
+ * This does not have to be done within the main function
+ */
+int					allocate_space(t_philo ***philos, t_data *data);
+
+// input.c
 int					check_arg(t_data *data, char *input, int *value, bool is_time);
 int					parse_args(t_data *data, int ac, char **av);
-int					init_prog(t_data *data, int ac, char **av);
 
 // printer.c
 /**
