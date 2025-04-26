@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 13:46:05 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 13:50:29 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	*daily_routine(void *philo)
 	p = (t_philo *)philo;
 	while (1)
 	{
+		if (p->data->ttd == 0)
+			break;
 		// Take first fork depending on philosopher number
 		if (p->philo_nb % 2 == 0)
 			pthread_mutex_lock(&p->mutexes[p->fork_left]);
