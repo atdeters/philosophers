@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
+/*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 18:33:31 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/07 18:08:19 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/26 13:56:49 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	parse_args(t_data *data, int ac, char **av)
 		return (data->error = ERR_USAGE);
 	if (check_arg(data, av[1], &data->nbp, false))
 		flag = ERR_INV_ARG;
+	if (data->nbp == 0)
+		return(data->error = ERR_NO_PHILO);
 	if (check_arg(data, av[2], &data->ttd, true))
 		flag = ERR_INV_ARG;
 	if (check_arg(data, av[3], &data->tte, true))

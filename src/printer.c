@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   printer.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
+/*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:14:34 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/25 16:35:27 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/26 13:57:25 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	p_err(int code)
 		p_str_fd(2, "Usage: ./philosopher nb ttd tte tts [nbte]\n");
 	if (code == ERR_GTOD)
 		p_str_fd(2, "gettimeofday function failed to execute\n");
+	if (code == ERR_NO_PHILO)
+		p_str_fd(2, "Simulation needs at least 1 philosopher\n");
 	return (code);
 }
 

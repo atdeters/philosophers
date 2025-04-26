@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 13:12:22 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 13:56:00 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ enum				e_errors
 	ERR_OVERFLOW = 4,
 	ERR_UNDERFLOW = 5,
 	ERR_NEG_ARG = 6,
+	ERR_NO_PHILO = 7,
 	ERR_MALLOC = 12,
 	ERR_IS_KIL = 42,
 };
