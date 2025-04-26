@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 14:43:13 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 14:49:59 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,8 +189,6 @@ unsigned int		time_passed(t_data *data);
 // helpers2.c
 int					ft_isdigit(int c);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
-void				free_mutexes(pthread_mutex_t **lst);
-void				free_threads(pthread_t **lst);
 
 // init.c
 int					check_arg(t_data *data, char *input, int *value, bool is_time);
