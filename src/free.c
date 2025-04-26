@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 12:26:11 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/27 00:55:02 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 01:52:12 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	destroy_threads_nb(pthread_t *threads, int nb)
 	}
 }
 
-void	free_allos(t_philo ***philos, pthread_t **threads, pthread_mutex_t **mutexes, int nbp)
+void	free_allos(t_philo ***philos, pthread_t **threads,
+	pthread_mutex_t **mutexes, int nbp)
 {
 	if (mutexes && *mutexes)
 	{
@@ -66,5 +67,5 @@ void	free_allos(t_philo ***philos, pthread_t **threads, pthread_mutex_t **mutexe
 	{
 		free_philos(*philos, nbp);
 		*philos = NULL;
-	}	
+	}
 }
