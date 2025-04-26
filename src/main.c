@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 15:42:41 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 23:35:09 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,18 @@ t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 	return (p);
 }
 
+void	destroy_mutex_nb(pthread_mutex_t *mutexes, int nb)
+{
+	int	i;
+
+	i = 0;
+	while (i < nb)
+	{
+		pthread_mutex_destroy(&mutexes[i]);
+		i++;
+	}
+}
+
 void	free_allos(t_philo ***philos, pthread_t **threads, pthread_mutex_t **mutexes, int nbp)
 {
 	if (mutexes && *mutexes)
@@ -245,7 +257,12 @@ int	main(int ac, char **av)
 	i = 0;
 	while (i < data.nbp + ADD_MUT)
 	{
-		pthread_mutex_init(&mutexes[i], NULL); //! Protec
+		if (pthread_mutex_init(&mutexes[i], NULL))
+		{
+			destroy_mutex_nb(mutexes, i);
+			free_allos(&philos, &threads, &mutexes, data.nbp);
+			return (p_err(ERR_MUT_INIT));
+		}
 		i++;
 	}
 
@@ -265,15 +282,11 @@ int	main(int ac, char **av)
 		pthread_join(threads[i], NULL);
 		i++;
 	}
-	// Exit properly
-	i = 0;
-	while (i < data.nbp + ADD_MUT)
-	{
-		pthread_mutex_destroy(&mutexes[i]);
-		i++;
-	}
 
+	// Exit properly
+	
 	// Free all the memory
+	destroy_mutex_nb(mutexes, data.nbp + ADD_MUT);
 	free_allos(&philos, &threads, &mutexes, data.nbp);
 	if (data.is_kil)
 		return (ERR_IS_KIL);
