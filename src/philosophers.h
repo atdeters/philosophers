@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
+/*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/24 16:14:41 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/26 13:10:54 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ enum				e_errors
 	ERR_UNDERFLOW = 5,
 	ERR_NEG_ARG = 6,
 	ERR_MALLOC = 12,
+	ERR_IS_KILL = 42,
 };
 
 enum				e_actions
