@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 15:00:02 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 15:03:02 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,21 +123,19 @@ void	*check_death(void *philos)
 {
 	t_philo	**ps;
 	int		i;
-	int		nb;
 	bool	flag;
 
 	ps = (t_philo **)philos;
-	nb = (*ps)->data->nbp;
 	flag = false;
 	while (1)
 	{
 		i = 0;
-		while (i < nb)
+		while (i < (*ps)->data->nbp)
 		{
 			if (is_p_kil(ps, i))
 			{
 				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp]);
-				printf("%d\t%d died\n", time_passed((*ps)->data), i + 1);
+				printf("%d\t%d died\n", time_passed((*ps)->data), i + 1); //! Sometimes not last message
 				pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp]);
 				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
 				(*ps)->data->is_kil = true;
