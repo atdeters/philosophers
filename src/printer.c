@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:14:34 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 13:57:25 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 15:30:04 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ bool	p_log(t_data *data, int philo_nb, int action, pthread_mutex_t *mutexes)
 		return (pthread_mutex_unlock(&mutexes[data->nbp + 1]), false);
 	pthread_mutex_unlock(&mutexes[data->nbp + 1]);
 	pthread_mutex_lock(&mutexes[data->nbp]);
+	pthread_mutex_lock(&mutexes[data->nbp + 2]);
 	p_nbr_fd(1, time_passed(data));
+	pthread_mutex_unlock(&mutexes[data->nbp + 2]);
 	p_str_fd(1, "\t");
 	p_nbr_fd(1, philo_nb);
 	if (action == FORK)
