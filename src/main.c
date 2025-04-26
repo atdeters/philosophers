@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/26 13:11:01 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/26 13:12:26 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,6 @@ int	main(int ac, char **av)
 	free_philos(philos);
 	philos = NULL;
 	if (data.is_kil)
-		return (ERR_IS_KILL);
+		return (ERR_IS_KIL);
 	return (0);
 }
