@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 01:02:24 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/27 01:46:04 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 01:50:02 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,17 @@ bool	everyone_ate(t_philo **philos)
 	return (false);
 }
 
+void	do_on_death(t_philo **ps, int i, bool *flag)
+{
+	pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
+	pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp]);
+	printf("%d\t%d died\n", time_passed((*ps)->data), i + 1);
+	pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp]);
+	(*ps)->data->is_kil = true;
+	*flag = true;
+	pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
+}
+
 void	*check_death(void *philos)
 {
 	t_philo	**ps;
@@ -51,13 +62,7 @@ void	*check_death(void *philos)
 		{
 			if (is_p_kil(ps, i))
 			{
-				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
-				pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp]);
-				printf("%d\t%d died\n", time_passed((*ps)->data), i + 1);
-				pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp]);
-				(*ps)->data->is_kil = true;
-				flag = true;
-				pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
+				do_on_death(ps, i, &flag);
 				break ;
 			}
 			i++;
