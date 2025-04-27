@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/27 02:10:12 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 02:14:02 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ void	*daily_routine(void *philo)
 	{
 		if (p->data->ttd == 0)
 			break ;
+
+
+
+		//============= FORK 1 Block
 		if (p->philo_nb % 2 == 0)
 			pthread_mutex_lock(&p->mutexes[p->fork_left]);
 		else
@@ -40,6 +44,10 @@ void	*daily_routine(void *philo)
 			pthread_mutex_unlock(&p->mutexes[0]);
 			break ;
 		}
+		//=======================
+
+
+		//====================== FORK 2 Block
 		if (p->philo_nb % 2 != 0)
 			pthread_mutex_lock(&p->mutexes[p->fork_left]);
 		else
@@ -50,6 +58,10 @@ void	*daily_routine(void *philo)
 			pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 			break ;
 		}
+		//=======================
+
+
+		//======================= EATING BLOCK
 		if (!p_log(p->data, p->philo_nb, EAT, p->mutexes))
 		{
 			pthread_mutex_unlock(&p->mutexes[p->fork_left]);
@@ -70,12 +82,20 @@ void	*daily_routine(void *philo)
 			pthread_mutex_unlock(&p->mutexes[p->data->nbp + 3]);
 			break ;
 		}
+		//==========================
+
+
+
+		
+
+		//============== Think & Sleep Block
 		if (!p_log(p->data, p->philo_nb, SLEEP, p->mutexes))
 			break ;
 		usleep(p->data->tts);
 		if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
 			break ;
 		usleep(1000); // Thinking manipulation to win fights? NEEDED?
+		//======================
 	}
 	return (NULL);
 }
