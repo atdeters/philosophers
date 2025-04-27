@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/27 00:59:54 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 02:01:52 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,13 @@
 
 void	*daily_routine(void *philo)
 {
-	t_philo *p;
+	t_philo	*p;
 
 	p = (t_philo *)philo;
 	while (1)
 	{
-		// Don't do anything for a ttd of 0
 		if (p->data->ttd == 0)
-			break;
-
-		// Take first fork depending on philosopher number
+			break ;
 		if (p->philo_nb % 2 == 0)
 			pthread_mutex_lock(&p->mutexes[p->fork_left]);
 		else
@@ -35,18 +32,14 @@ void	*daily_routine(void *philo)
 				pthread_mutex_unlock(&p->mutexes[p->fork_left]);
 			else
 				pthread_mutex_unlock(&p->mutexes[p->fork_right]);
-			break;
+			break ;
 		}
-
-		// Special case for only having one philosopher
 		if (p->data->nbp == 1)
 		{
 			usleep(p->data->ttd);
 			pthread_mutex_unlock(&p->mutexes[p->fork_right]);
-			break;
+			break ;
 		}
-
-		// Take second fork depending on philosopher number
 		if (p->philo_nb % 2 != 0)
 			pthread_mutex_lock(&p->mutexes[p->fork_left]);
 		else
@@ -55,44 +48,34 @@ void	*daily_routine(void *philo)
 		{
 			pthread_mutex_unlock(&p->mutexes[p->fork_left]);
 			pthread_mutex_unlock(&p->mutexes[p->fork_right]);
-			break;
+			break ;
 		}
-
-		// Eat and update the time since the last meal
 		if (!p_log(p->data, p->philo_nb, EAT, p->mutexes))
 		{
 			pthread_mutex_unlock(&p->mutexes[p->fork_left]);
 			pthread_mutex_unlock(&p->mutexes[p->fork_right]);
-			break;
+			break ;
 		}
 		pthread_mutex_lock(&p->mutexes[p->data->nbp + 2]);
 		p->time_since_meal = time_passed(p->data);
 		pthread_mutex_unlock(&p->mutexes[p->data->nbp + 2]);
 		usleep(p->data->tte);
 		p->times_eaten++;
-
-		// Put down both forks at the same time
 		pthread_mutex_unlock(&p->mutexes[p->fork_left]);
 		pthread_mutex_unlock(&p->mutexes[p->fork_right]);
-
-		// If finished, update the number of philosophers that have finished
 		if (p->times_eaten == p->data->nbte)
 		{
 			pthread_mutex_lock(&p->mutexes[p->data->nbp + 3]);
 			p->data->nb_finished_eating++;
 			pthread_mutex_unlock(&p->mutexes[p->data->nbp + 3]);
-			break;
+			break ;
 		}
-
-		// Sleep
 		if (!p_log(p->data, p->philo_nb, SLEEP, p->mutexes))
-			break;
+			break ;
 		usleep(p->data->tts);
-
-		// Think
-		usleep(1000);
+		usleep(1000); // Thinking manipulation to win fights?
 		if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
-			break;
+			break ;
 	}
 	return (NULL);
 }
@@ -110,7 +93,6 @@ int	main(int ac, char **av)
 		return (ERR_GTOD);
 	if (!allocate_space(&philos, &data))
 		return (ERR_MALLOC);
-
 	// Creation of the mutexes
 	i = 0;
 	while (i < data.nbp + ADD_MUT)
@@ -123,7 +105,6 @@ int	main(int ac, char **av)
 		}
 		i++;
 	}
-
 	// Creation of the threads
 	i = 0;
 	pthread_mutex_lock(&data.mutexes[data.nbp + 1]);
@@ -152,7 +133,6 @@ int	main(int ac, char **av)
 		return (ERR_THREAD_CREATE);
 	}
 	pthread_mutex_unlock(&data.mutexes[data.nbp + 1]);
-
 	// Exit program cleanly
 	destroy_threads_nb(data.threads, data.nbp + 1);
 	destroy_mutex_nb(data.mutexes, data.nbp + ADD_MUT);
