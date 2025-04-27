@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/27 02:05:40 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/27 02:10:12 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ void	*daily_routine(void *philo)
 		if (!p_log(p->data, p->philo_nb, SLEEP, p->mutexes))
 			break ;
 		usleep(p->data->tts);
-		usleep(1000); // Thinking manipulation to win fights?
 		if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
 			break ;
+		usleep(1000); // Thinking manipulation to win fights? NEEDED?
 	}
 	return (NULL);
 }
