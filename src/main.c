@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 00:46:53 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 00:50:48 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,9 @@ void	*daily_routine(void *philo)
 		
 		
 		
-		//============= FORK 1 Block
+		//============= THINK TIME Block
 		if (p->data->ttd == 0)
 			break ;
-		// Force odd to start the race
 		if (p->philo_nb % 2 == 0 && p->times_eaten == 0)
 			usleep(20000);
 		if (p->data->nbp % 2 != 0 && p->philo_nb == get_next_delay(p->data))
@@ -48,6 +47,11 @@ void	*daily_routine(void *philo)
 				p->data->next_delay += 2;
 			pthread_mutex_unlock(&p->data->mutexes[p->data->nbp + 5]);
 		}
+		//=================
+
+		
+
+		//================== FORK 1 Block
 		if (p->philo_nb % 2 == 0)
 			pthread_mutex_lock(&p->mutexes[p->fork_left]);
 		else
