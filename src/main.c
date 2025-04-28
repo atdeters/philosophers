@@ -6,12 +6,11 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 01:25:21 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 01:32:21 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
-#include <stdio.h>
+#include "../includes/philosophers.h"
 
 int		get_next_delay(t_data *data)
 {

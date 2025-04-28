@@ -6,11 +6,11 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 12:26:11 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/27 01:52:12 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 01:31:39 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "../includes/philosophers.h"
 
 void	free_philos(t_philo **lst, int nbp)
 {

@@ -6,11 +6,11 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 18:33:31 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/27 01:53:23 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 01:31:59 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "../includes/philosophers.h"
 
 int	check_arg(t_data *data, char *input, int *value, bool is_time)
 {

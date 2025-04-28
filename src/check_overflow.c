@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_overflow.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
+/*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 17:16:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/03/28 17:27:04 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/29 01:31:29 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "../includes/philosophers.h"
 
 int	overflow_digits(char *str)
 {

@@ -6,11 +6,11 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 00:51:57 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/29 01:07:34 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 01:31:54 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "../includes/philosophers.h"
 
 int	init_prog(t_data *data, int ac, char **av)
 {

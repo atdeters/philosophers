@@ -6,11 +6,11 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 18:30:51 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/08 12:26:23 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 01:31:49 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "../includes/philosophers.h"
 
 int	ft_isdigit(int c)
 {
