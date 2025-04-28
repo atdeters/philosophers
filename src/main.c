@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/28 21:22:35 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/28 21:31:04 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ void	*daily_routine(void *philo)
 	p = (t_philo *)philo;
 	while (1)
 	{
+		
+		
+		
+		//============= FORK 1 Block
 		if (p->data->ttd == 0)
 			break ;
-
-
-
-		//============= FORK 1 Block
 		if (p->philo_nb % 2 == 0)
 			pthread_mutex_lock(&p->mutexes[p->fork_left]);
 		else
@@ -38,16 +38,16 @@ void	*daily_routine(void *philo)
 				pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 			break ;
 		}
+		//=======================
+		
+		
+		//====================== FORK 2 Block
 		if (p->data->nbp == 1)
 		{
 			usleep(p->data->ttd);
 			pthread_mutex_unlock(&p->mutexes[0]);
 			break ;
 		}
-		//=======================
-
-
-		//====================== FORK 2 Block
 		if (p->philo_nb % 2 != 0)
 			pthread_mutex_lock(&p->mutexes[p->fork_left]);
 		else
