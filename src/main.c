@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/28 21:31:04 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/28 23:08:11 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ int	main(int ac, char **av)
 	philos = NULL;
 	if (init_prog(&data, ac, av))
 		return (p_err(data.error));
+	if (data.nbte == 0)
+		return (0);
 	if (gettimeofday(&data.start, NULL) < 0)
 		return (ERR_GTOD);
 	if (!allocate_space(&philos, &data))
