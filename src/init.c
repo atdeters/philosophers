@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 00:51:57 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/28 23:54:36 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 00:28:53 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	init_prog(t_data *data, int ac, char **av)
 	data->nb_finished_eating = 0;
 	data->threads = NULL;
 	data->mutexes = NULL;
-	data->next_delay = 1;
+	data->next_delay = data->nbp;
 	return (0);
 }
 
