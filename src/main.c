@@ -6,12 +6,21 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 00:36:08 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 00:46:53 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 #include <stdio.h>
+
+int		get_next_delay(t_data *data)
+{
+	int res;
+
+	pthread_mutex_lock(&data->mutexes[data->nbp + 5]);
+	res = data->next_delay;
+	return (pthread_mutex_unlock(&data->mutexes[data->nbp + 5]), res);
+}
 
 void	*daily_routine(void *philo)
 {
@@ -27,16 +36,18 @@ void	*daily_routine(void *philo)
 		if (p->data->ttd == 0)
 			break ;
 		// Force odd to start the race
-		// if (p->philo_nb % 2 == 0 && p->times_eaten == 0)
-		// 	usleep(20000);
-		// if (p->data->nbp % 2 != 0 && p->philo_nb == p->data->next_delay)
-		// {
-		// 	usleep(20000);
-		// 	if (p->philo_nb == p->data->nbp)
-		// 		p->data->next_delay = 1;
-		// 	else
-		// 		p->data->next_delay += 2;
-		// }
+		if (p->philo_nb % 2 == 0 && p->times_eaten == 0)
+			usleep(20000);
+		if (p->data->nbp % 2 != 0 && p->philo_nb == get_next_delay(p->data))
+		{
+			usleep(20000);
+			pthread_mutex_lock(&p->data->mutexes[p->data->nbp + 5]);
+			if (p->philo_nb == p->data->nbp)
+				p->data->next_delay = 1;
+			else
+				p->data->next_delay += 2;
+			pthread_mutex_unlock(&p->data->mutexes[p->data->nbp + 5]);
+		}
 		if (p->philo_nb % 2 == 0)
 			pthread_mutex_lock(&p->mutexes[p->fork_left]);
 		else
