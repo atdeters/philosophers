@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 01:02:24 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/28 23:16:24 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 00:34:41 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,14 @@ void	do_on_death(t_philo **ps, int i, bool *flag)
 	pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
 }
 
+bool	is_finish(t_philo **ps, int i)
+{
+	pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 4]);
+	if (ps[i]->has_finished)
+		return (pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 4]), true);
+	return (pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 4]), false);
+}
+
 void	*death_thread(void *philos)
 {
 	t_philo	**ps;
@@ -60,7 +68,7 @@ void	*death_thread(void *philos)
 		i = 0;
 		while (i < (*ps)->data->nbp)
 		{
-			if (!ps[i]->has_finished && is_p_kil(ps, i))
+			if (!is_finish(ps, i) && is_p_kil(ps, i)) //! Needs mutex
 			{
 				do_on_death(ps, i, &flag);
 				break ;

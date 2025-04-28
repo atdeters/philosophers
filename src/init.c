@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 00:51:57 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/29 00:28:53 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 00:35:36 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ t_philo	*constructor(t_data *data, pthread_mutex_t *mutexes, int nb)
 	p->philo_nb = nb;
 	p->time_since_meal = 0;
 	p->times_eaten = 0;
+	pthread_mutex_lock(&mutexes[data->nbp + 4]), 
 	p->has_finished = false;
+	pthread_mutex_unlock(&mutexes[data->nbp + 4]), 
 	p->mutexes = mutexes;
 	if (nb == 1)
 		p->fork_left = p->data->nbp - 1;

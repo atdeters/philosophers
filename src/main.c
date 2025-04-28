@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 00:29:07 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 00:36:08 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ void	*daily_routine(void *philo)
 		if (p->data->ttd == 0)
 			break ;
 		// Force odd to start the race
-		if (p->philo_nb % 2 == 0 && p->times_eaten == 0)
-			usleep(20000);
-		if (p->data->nbp % 2 != 0 && p->philo_nb == p->data->next_delay)
-		{
-			usleep(20000);
-			if (p->philo_nb == p->data->nbp)
-				p->data->next_delay = 1;
-			else
-				p->data->next_delay += 2;
-		}
+		// if (p->philo_nb % 2 == 0 && p->times_eaten == 0)
+		// 	usleep(20000);
+		// if (p->data->nbp % 2 != 0 && p->philo_nb == p->data->next_delay)
+		// {
+		// 	usleep(20000);
+		// 	if (p->philo_nb == p->data->nbp)
+		// 		p->data->next_delay = 1;
+		// 	else
+		// 		p->data->next_delay += 2;
+		// }
 		if (p->philo_nb % 2 == 0)
 			pthread_mutex_lock(&p->mutexes[p->fork_left]);
 		else
@@ -88,7 +88,9 @@ void	*daily_routine(void *philo)
 		pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 		if (p->times_eaten == p->data->nbte)
 		{
+			pthread_mutex_lock(&p->mutexes[p->data->nbp + 4]);
 			p->has_finished = true;
+			pthread_mutex_unlock(&p->mutexes[p->data->nbp + 4]);
 			pthread_mutex_lock(&p->mutexes[p->data->nbp + 3]);
 			p->data->nb_finished_eating++;
 			pthread_mutex_unlock(&p->mutexes[p->data->nbp + 3]);
