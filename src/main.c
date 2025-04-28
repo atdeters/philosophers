@@ -117,11 +117,13 @@ void	*daily_routine(void *philo)
 		
 
 		//============== Think & Sleep Block
-		if (!p_log(p->data, p->philo_nb, SLEEP, p->mutexes))
+		if (!act_think_and_sleep(p))
 			break ;
-		usleep(p->data->tts);
-		if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
-			break ;
+		// if (!p_log(p->data, p->philo_nb, SLEEP, p->mutexes))
+		// 	break ;
+		// usleep(p->data->tts);
+		// if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
+		// 	break ;
 		//======================
 	}
 	return (NULL);

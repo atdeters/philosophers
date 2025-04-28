@@ -150,6 +150,9 @@ typedef struct s_atoi_data
 }				t_atoi_data;
 
 // FUNCTIONS
+// actions.c
+int					act_think_and_sleep(t_philo	*p);
+
 // check_overflow.c
 /**
  * @brief Determines if a string representation of a number
