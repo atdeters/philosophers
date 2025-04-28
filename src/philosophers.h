@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/28 23:16:24 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/28 23:54:16 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ typedef struct s_data
 	unsigned int	elapsed;
 	pthread_t		*threads;
 	pthread_mutex_t	*mutexes;
+	int				next_delay;
 }					t_data;
 
 typedef struct s_philo

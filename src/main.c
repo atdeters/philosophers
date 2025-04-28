@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/28 23:16:24 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 00:07:30 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,17 @@ void	*daily_routine(void *philo)
 		//============= FORK 1 Block
 		if (p->data->ttd == 0)
 			break ;
+		// Force odd to start the race
+		if (p->philo_nb % 2 == 0 && p->times_eaten == 0)
+			usleep(20000);
+		if (p->data->nbp % 2 != 0 && p->philo_nb == p->data->next_delay)
+		{
+			usleep(20000);
+			if (p->philo_nb == p->data->nbp)
+				p->data->next_delay = 1;
+			else
+				p->data->next_delay += 2;
+		}
 		if (p->philo_nb % 2 == 0)
 			pthread_mutex_lock(&p->mutexes[p->fork_left]);
 		else
@@ -95,7 +106,6 @@ void	*daily_routine(void *philo)
 		usleep(p->data->tts);
 		if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
 			break ;
-		usleep(1000); // Thinking manipulation to win fights? NEEDED?
 		//======================
 	}
 	return (NULL);
