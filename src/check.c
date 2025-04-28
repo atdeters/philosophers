@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 01:02:24 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/28 21:22:15 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/28 23:16:24 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	do_on_death(t_philo **ps, int i, bool *flag)
 	pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
 }
 
-void	*check_death(void *philos)
+void	*death_thread(void *philos)
 {
 	t_philo	**ps;
 	int		i;

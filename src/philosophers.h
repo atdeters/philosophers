@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/28 21:20:40 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/28 23:16:24 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ int					check_overflow(char *str);
  */
 bool				is_p_kil(t_philo **ps, int i);
 bool				everyone_ate(t_philo **philos);
-void				*check_death(void *philos);
+void				*death_thread(void *philos);
 
 // free.c
 void				free_philos(t_philo **lst, int nbp);

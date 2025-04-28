@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/28 23:08:11 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/28 23:16:24 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ int	main(int ac, char **av)
 		}
 		i++;
 	}
-	if (pthread_create(&data.threads[data.nbp], NULL, &check_death, philos))
+	if (pthread_create(&data.threads[data.nbp], NULL, &death_thread, philos))
 	{
 		p_err(ERR_THREAD_CREATE);
 		data.is_kil = true;
