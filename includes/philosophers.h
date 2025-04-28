@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 01:03:48 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 01:52:03 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,10 @@ typedef struct s_atoi_data
 
 // FUNCTIONS
 // actions.c
+void				act_manipulate_think(t_philo *p);
+int					act_take_fork_one(t_philo *p);
+int					act_take_fork_two(t_philo *p);
+int					act_eat(t_philo *p);
 int					act_think_and_sleep(t_philo	*p);
 
 // check_overflow.c
@@ -231,6 +235,11 @@ unsigned int		time_passed(t_data *data);
 // helpers2.c
 int					ft_isdigit(int c);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
+/**
+ * Returns the philosopher that will be delayed next round
+ * It's used as a function to ensure that there are no data races
+ */
+int					get_next_delay(t_data *data);
 
 // init.c
 int					init_prog(t_data *data, int ac, char **av);

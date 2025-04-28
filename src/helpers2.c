@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 18:30:51 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 01:31:49 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 01:51:07 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,13 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		i++;
 	}
 	return (0);
+}
+
+int		get_next_delay(t_data *data)
+{
+	int res;
+
+	pthread_mutex_lock(&data->mutexes[data->nbp + 5]);
+	res = data->next_delay;
+	return (pthread_mutex_unlock(&data->mutexes[data->nbp + 5]), res);
 }
