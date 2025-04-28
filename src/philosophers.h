@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 00:38:09 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 01:03:48 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 // Macros
 /**
  * Defines how many mutexes are needed in addition to the forks
+ * 
+ * Additional mutexes are described in the data.mutexes doxy
+ * 
  */
 # define ADD_MUT 6
 
@@ -105,6 +108,15 @@ typedef struct s_data
 	struct timeval	curr;
 	unsigned int	elapsed;
 	pthread_t		*threads;
+	/**
+	 * 
+	 * - data.nbp:		printer mutex
+	 * - data.nbp + 1:	data.is_kil mutex
+	 * - data.nbp + 2:	philo.time_since_meal mutex
+	 * - data.nbp + 3:	data.nb_finished_eating mutex
+	 * - data.nbp + 4:	philo.has_finished mutex
+	 * - data.nbp + 5:	data.next_delay mutex 
+	 */
 	pthread_mutex_t	*mutexes;
 	int				next_delay;
 }					t_data;
@@ -118,6 +130,15 @@ typedef struct s_philo
 	int				fork_left;
 	int				fork_right;
 	bool			has_finished;
+	/**
+	 * 
+	 * - data.nbp:		printer mutex
+	 * - data.nbp + 1:	data.is_kil mutex
+	 * - data.nbp + 2:	philo.time_since_meal mutex
+	 * - data.nbp + 3:	data.nb_finished_eating mutex
+	 * - data.nbp + 4:	philo.has_finished mutex
+	 * - data.nbp + 5:	data.next_delay mutex 
+	 */
 	pthread_mutex_t	*mutexes;
 }				t_philo;
 
