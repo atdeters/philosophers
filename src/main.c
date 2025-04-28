@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/27 02:14:02 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/28 21:22:35 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	*daily_routine(void *philo)
 		pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 		if (p->times_eaten == p->data->nbte)
 		{
+			p->has_finished = true;
 			pthread_mutex_lock(&p->mutexes[p->data->nbp + 3]);
 			p->data->nb_finished_eating++;
 			pthread_mutex_unlock(&p->mutexes[p->data->nbp + 3]);

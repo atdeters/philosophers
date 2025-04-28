@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/27 01:57:07 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/28 21:20:40 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ typedef struct s_philo
 	int				times_eaten;
 	int				fork_left;
 	int				fork_right;
+	bool			has_finished;
 	pthread_mutex_t	*mutexes;
 }				t_philo;
 

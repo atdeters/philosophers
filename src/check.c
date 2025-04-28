@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 01:02:24 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/27 01:50:02 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/28 21:22:15 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	*check_death(void *philos)
 		i = 0;
 		while (i < (*ps)->data->nbp)
 		{
-			if (is_p_kil(ps, i))
+			if (!ps[i]->has_finished && is_p_kil(ps, i))
 			{
 				do_on_death(ps, i, &flag);
 				break ;
