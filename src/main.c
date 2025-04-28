@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 00:50:48 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 01:25:21 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	*daily_routine(void *philo)
 		if (p->data->ttd == 0)
 			break ;
 		if (p->philo_nb % 2 == 0 && p->times_eaten == 0)
-			usleep(20000);
+			usleep(30000);
 		if (p->data->nbp % 2 != 0 && p->philo_nb == get_next_delay(p->data))
 		{
 			usleep(20000);
@@ -139,8 +139,6 @@ int	main(int ac, char **av)
 		return (p_err(data.error));
 	if (data.nbte == 0)
 		return (0);
-	if (gettimeofday(&data.start, NULL) < 0)
-		return (ERR_GTOD);
 	if (!allocate_space(&philos, &data))
 		return (ERR_MALLOC);
 	// Creation of the mutexes
@@ -182,6 +180,8 @@ int	main(int ac, char **av)
 		free_allos(&philos, &data.threads, &data.mutexes, data.nbp);
 		return (ERR_THREAD_CREATE);
 	}
+	if (gettimeofday(&data.start, NULL) < 0)
+		return (ERR_GTOD);
 	pthread_mutex_unlock(&data.mutexes[data.nbp + 1]);
 	// Exit program cleanly
 	destroy_threads_nb(data.threads, data.nbp + 1);
