@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 00:51:57 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/29 02:25:00 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 02:39:24 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,22 @@ int	allocate_space(t_philo ***philos, t_data *data)
 		i++;
 	}
 	return (p_err(ERR_MALLOC), 1);
+}
+
+int	create_mutexes(t_data *data, t_philo **philos)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->nbp + ADD_MUT)
+	{
+		if (pthread_mutex_init(&data->mutexes[i], NULL))
+		{
+			destroy_mutex_nb(data->mutexes, i);
+			free_allos(&philos, &data->threads, &data->mutexes, data->nbp);
+			return (p_err(ERR_MUT_INIT));
+		}
+		i++;
+	}
+	return (0);
 }

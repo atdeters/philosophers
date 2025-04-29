@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 01:52:03 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 02:39:43 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,6 +250,7 @@ t_philo				*constructor(t_data *data, pthread_mutex_t *mutexes,
  * This does not have to be done within the main function
  */
 int					allocate_space(t_philo ***philos, t_data *data);
+int					create_mutexes(t_data *data, t_philo **philos);
 
 // input.c
 int					check_arg(t_data *data, char *input, int *value,

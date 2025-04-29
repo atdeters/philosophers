@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 02:36:12 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 02:39:20 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,6 @@ void	*daily_routine(void *philo)
 	return (NULL);
 }
 
-int	create_mutexes(t_data *data, t_philo **philos)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->nbp + ADD_MUT)
-	{
-		if (pthread_mutex_init(&data->mutexes[i], NULL))
-		{
-			destroy_mutex_nb(data->mutexes, i);
-			free_allos(&philos, &data->threads, &data->mutexes, data->nbp);
-			return (p_err(ERR_MUT_INIT));
-		}
-		i++;
-	}
-	return (0);
-}
-
 int	main(int ac, char **av)
 {
 	int		i;
@@ -65,22 +47,13 @@ int	main(int ac, char **av)
 		return (0);
 	if (!allocate_space(&philos, &data))
 		return (ERR_MALLOC);
-	// Creation of the mutexes
-	create_mutexes(&data, philos);
-	// i = 0;
-	// while (i < data.nbp + ADD_MUT)
-	// {
-	// 	if (pthread_mutex_init(&data.mutexes[i], NULL))
-	// 	{
-	// 		destroy_mutex_nb(data.mutexes, i);
-	// 		free_allos(&philos, &data.threads, &data.mutexes, data.nbp);
-	// 		return (p_err(ERR_MUT_INIT));
-	// 	}
-	// 	i++;
-	// }
+	if (create_mutexes(&data, philos))
+		return (ERR_MUT_INIT);
 	// Creation of the threads
 	i = 0;
 	pthread_mutex_lock(&data.mutexes[data.nbp + 1]);
+
+	
 	while (i < data.nbp)
 	{
 		if (pthread_create(&data.threads[i], NULL, &daily_routine, philos[i]))
@@ -107,6 +80,8 @@ int	main(int ac, char **av)
 		free_allos(&philos, &data.threads, &data.mutexes, data.nbp);
 		return (ERR_THREAD_CREATE);
 	}
+
+	
 	pthread_mutex_unlock(&data.mutexes[data.nbp + 1]);
 	// Exit program cleanly
 	destroy_threads_nb(data.threads, data.nbp + 1);
