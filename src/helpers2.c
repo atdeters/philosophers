@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 18:30:51 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 02:32:08 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 14:10:08 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,12 @@ int	get_next_delay(t_data *data)
 	pthread_mutex_lock(&data->mutexes[data->nbp + 5]);
 	res = data->next_delay;
 	return (pthread_mutex_unlock(&data->mutexes[data->nbp + 5]), res);
+}
+
+void	do_on_sleep_fail(t_philo **ps)
+{
+	pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
+	(*ps)->data->is_kil = true;
+	pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
+	p_str_fd(2, "Error: usleep function failed!\n");
 }
