@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 02:39:20 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 02:47:01 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,30 @@ void	*daily_routine(void *philo)
 	return (NULL);
 }
 
-int	main(int ac, char **av)
+int	create_philo_threads(t_data *data, t_philo **philos)
 {
 	int		i;
+
+	i = 0;
+	while (i < data->nbp)
+	{
+		if (pthread_create(&data->threads[i], NULL, &daily_routine, philos[i]))
+		{
+			p_err(ERR_THREAD_CREATE);
+			data->is_kil = true;
+			pthread_mutex_unlock(&data->mutexes[data->nbp + 1]);
+			destroy_threads_nb(data->threads, i);
+			destroy_mutex_nb(data->mutexes, data->nbp + ADD_MUT);
+			free_allos(&philos, &data->threads, &data->mutexes, data->nbp);
+			return (ERR_THREAD_CREATE);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	main(int ac, char **av)
+{
 	t_data	data;
 	t_philo	**philos;
 
@@ -50,24 +71,12 @@ int	main(int ac, char **av)
 	if (create_mutexes(&data, philos))
 		return (ERR_MUT_INIT);
 	// Creation of the threads
-	i = 0;
 	pthread_mutex_lock(&data.mutexes[data.nbp + 1]);
 
 	
-	while (i < data.nbp)
-	{
-		if (pthread_create(&data.threads[i], NULL, &daily_routine, philos[i]))
-		{
-			p_err(ERR_THREAD_CREATE);
-			data.is_kil = true;
-			pthread_mutex_unlock(&data.mutexes[data.nbp + 1]);
-			destroy_threads_nb(data.threads, i);
-			destroy_mutex_nb(data.mutexes, data.nbp + ADD_MUT);
-			free_allos(&philos, &data.threads, &data.mutexes, data.nbp);
-			return (ERR_THREAD_CREATE);
-		}
-		i++;
-	}
+	if (create_philo_threads(&data, philos))
+		return (ERR_THREAD_CREATE);
+	
 	if (gettimeofday(&data.start, NULL) < 0)
 		return (ERR_GTOD);
 	if (pthread_create(&data.threads[data.nbp], NULL, &death_thread, philos))
@@ -80,7 +89,6 @@ int	main(int ac, char **av)
 		free_allos(&philos, &data.threads, &data.mutexes, data.nbp);
 		return (ERR_THREAD_CREATE);
 	}
-
 	
 	pthread_mutex_unlock(&data.mutexes[data.nbp + 1]);
 	// Exit program cleanly
