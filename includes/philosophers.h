@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 14:10:25 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/29 14:13:19 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,7 @@ int					ft_strncmp(const char *s1, const char *s2, size_t n);
  */
 int					get_next_delay(t_data *data);
 void				do_on_sleep_fail(t_philo **ps);
+bool				is_over(t_philo **ps);
 
 // init.c
 int					init_prog(t_data *data, int ac, char **av);
