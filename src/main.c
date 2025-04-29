@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 02:15:00 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 02:24:33 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ int	main(int ac, char **av)
 		}
 		i++;
 	}
+	if (gettimeofday(&data.start, NULL) < 0)
+		return (ERR_GTOD);
 	if (pthread_create(&data.threads[data.nbp], NULL, &death_thread, philos))
 	{
 		p_err(ERR_THREAD_CREATE);
@@ -145,8 +147,6 @@ int	main(int ac, char **av)
 		free_allos(&philos, &data.threads, &data.mutexes, data.nbp);
 		return (ERR_THREAD_CREATE);
 	}
-	if (gettimeofday(&data.start, NULL) < 0)
-		return (ERR_GTOD);
 	pthread_mutex_unlock(&data.mutexes[data.nbp + 1]);
 	// Exit program cleanly
 	destroy_threads_nb(data.threads, data.nbp + 1);
