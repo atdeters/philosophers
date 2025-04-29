@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 02:47:01 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 02:57:17 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,44 @@ int	create_philo_threads(t_data *data, t_philo **philos)
 	return (0);
 }
 
+int	create_death_thread(t_data *data, t_philo **philos)
+{
+	if (pthread_create(&data->threads[data->nbp], NULL, &death_thread, philos))
+	{
+		p_err(ERR_THREAD_CREATE);
+		data->is_kil = true;
+		pthread_mutex_unlock(&data->mutexes[data->nbp + 1]);
+		destroy_threads_nb(data->threads, data->nbp + 1);
+		destroy_mutex_nb(data->mutexes, data->nbp + ADD_MUT);
+		free_allos(&philos, &data->threads, &data->mutexes, data->nbp);
+		return (ERR_THREAD_CREATE);
+	}
+	return (0);
+}
+
+int	make_threads_and_time(t_data *data, t_philo **philos)
+{
+	pthread_mutex_lock(&data->mutexes[data->nbp + 1]);
+	if (create_philo_threads(data, philos))
+	{
+		pthread_mutex_unlock(&data->mutexes[data->nbp + 1]);
+		return (data->error = ERR_THREAD_CREATE, ERR_THREAD_CREATE);
+	}
+	
+	if (gettimeofday(&data->start, NULL) < 0)
+	{
+		pthread_mutex_unlock(&data->mutexes[data->nbp + 1]);
+		return (data->error = ERR_GTOD, ERR_GTOD);
+	}
+	if (create_death_thread(data, philos))
+	{
+		pthread_mutex_unlock(&data->mutexes[data->nbp + 1]);
+		return (data->error = ERR_THREAD_CREATE, ERR_THREAD_CREATE);
+	}
+	pthread_mutex_unlock(&data->mutexes[data->nbp + 1]);
+	return (0);
+}
+
 int	main(int ac, char **av)
 {
 	t_data	data;
@@ -70,28 +108,8 @@ int	main(int ac, char **av)
 		return (ERR_MALLOC);
 	if (create_mutexes(&data, philos))
 		return (ERR_MUT_INIT);
-	// Creation of the threads
-	pthread_mutex_lock(&data.mutexes[data.nbp + 1]);
-
-	
-	if (create_philo_threads(&data, philos))
-		return (ERR_THREAD_CREATE);
-	
-	if (gettimeofday(&data.start, NULL) < 0)
-		return (ERR_GTOD);
-	if (pthread_create(&data.threads[data.nbp], NULL, &death_thread, philos))
-	{
-		p_err(ERR_THREAD_CREATE);
-		data.is_kil = true;
-		pthread_mutex_unlock(&data.mutexes[data.nbp + 1]);
-		destroy_threads_nb(data.threads, data.nbp + 1);
-		destroy_mutex_nb(data.mutexes, data.nbp + ADD_MUT);
-		free_allos(&philos, &data.threads, &data.mutexes, data.nbp);
-		return (ERR_THREAD_CREATE);
-	}
-	
-	pthread_mutex_unlock(&data.mutexes[data.nbp + 1]);
-	// Exit program cleanly
+	if (make_threads_and_time(&data, philos))
+		return (data.error);
 	destroy_threads_nb(data.threads, data.nbp + 1);
 	destroy_mutex_nb(data.mutexes, data.nbp + ADD_MUT);
 	free_allos(&philos, &data.threads, &data.mutexes, data.nbp);
