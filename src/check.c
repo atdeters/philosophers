@@ -66,6 +66,7 @@ void	*death_thread(void *philos)
 
 	ps = (t_philo **)philos;
 	flag = false;
+	usleep(50000);
 	while (1)
 	{
 		i = 0;
