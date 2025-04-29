@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 01:50:59 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 02:08:18 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,43 +23,29 @@ void	*daily_routine(void *philo)
 		
 		if (p->data->ttd == 0)
 			break ;
-		
-		//============= THINK TIME Block
 		act_manipulate_think(p);
-		// if (p->philo_nb % 2 == 0 && p->times_eaten == 0)
-		// 	usleep(30000);
-		// if (p->data->nbp % 2 != 0 && p->philo_nb == get_next_delay(p->data))
-		// {
-		// 	usleep(20000);
-		// 	pthread_mutex_lock(&p->data->mutexes[p->data->nbp + 5]);
-		// 	if (p->philo_nb == p->data->nbp)
-		// 		p->data->next_delay = 1;
-		// 	else
-		// 		p->data->next_delay += 2;
-		// 	pthread_mutex_unlock(&p->data->mutexes[p->data->nbp + 5]);
-		// }
-		//=================
 
 		
-
 		//================== FORK 1 Block
-		if (p->philo_nb % 2 == 0)
-			pthread_mutex_lock(&p->mutexes[p->fork_left]);
-		else
-			pthread_mutex_lock(&p->mutexes[p->fork_right]);
-		if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
-		{
-			if (p->philo_nb % 2 == 0)
-				pthread_mutex_unlock(&p->mutexes[p->fork_left]);
-			else
-				pthread_mutex_unlock(&p->mutexes[p->fork_right]);
-			break ;
-		}
+		if (!act_take_fork_one(p))
+			break;
+		// if (p->philo_nb % 2 == 0)
+		// 	pthread_mutex_lock(&p->mutexes[p->fork_left]);
+		// else
+		// 	pthread_mutex_lock(&p->mutexes[p->fork_right]);
+		// if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
+		// {
+		// 	if (p->philo_nb % 2 == 0)
+		// 		pthread_mutex_unlock(&p->mutexes[p->fork_left]);
+		// 	else
+		// 		pthread_mutex_unlock(&p->mutexes[p->fork_right]);
+		// 	break ;
+		// }
 		//=======================
 		
 		
 		//====================== FORK 2 Block
-		if (p->data->nbp == 1) //TODO: Add this part to documentation
+		if (p->data->nbp == 1) //TODO: Explain this part to documentation
 		{
 			usleep(p->data->ttd);
 			pthread_mutex_unlock(&p->mutexes[0]);
