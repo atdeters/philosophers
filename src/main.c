@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 02:32:28 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 02:36:12 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,24 @@ void	*daily_routine(void *philo)
 	return (NULL);
 }
 
+int	create_mutexes(t_data *data, t_philo **philos)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->nbp + ADD_MUT)
+	{
+		if (pthread_mutex_init(&data->mutexes[i], NULL))
+		{
+			destroy_mutex_nb(data->mutexes, i);
+			free_allos(&philos, &data->threads, &data->mutexes, data->nbp);
+			return (p_err(ERR_MUT_INIT));
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	main(int ac, char **av)
 {
 	int		i;
@@ -48,17 +66,18 @@ int	main(int ac, char **av)
 	if (!allocate_space(&philos, &data))
 		return (ERR_MALLOC);
 	// Creation of the mutexes
-	i = 0;
-	while (i < data.nbp + ADD_MUT)
-	{
-		if (pthread_mutex_init(&data.mutexes[i], NULL))
-		{
-			destroy_mutex_nb(data.mutexes, i);
-			free_allos(&philos, &data.threads, &data.mutexes, data.nbp);
-			return (p_err(ERR_MUT_INIT));
-		}
-		i++;
-	}
+	create_mutexes(&data, philos);
+	// i = 0;
+	// while (i < data.nbp + ADD_MUT)
+	// {
+	// 	if (pthread_mutex_init(&data.mutexes[i], NULL))
+	// 	{
+	// 		destroy_mutex_nb(data.mutexes, i);
+	// 		free_allos(&philos, &data.threads, &data.mutexes, data.nbp);
+	// 		return (p_err(ERR_MUT_INIT));
+	// 	}
+	// 	i++;
+	// }
 	// Creation of the threads
 	i = 0;
 	pthread_mutex_lock(&data.mutexes[data.nbp + 1]);
