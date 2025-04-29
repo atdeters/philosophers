@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:34:34 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/29 02:07:45 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 02:15:10 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,26 @@ int	act_take_fork_one(t_philo *p)
 	return (1);
 }
 
-// int	act_take_fork_two(t_philo *p)
-// {
-
-// }
+int	act_take_fork_two(t_philo *p)
+{
+	if (p->data->nbp == 1) //TODO: Explain this part to documentation
+	{
+		usleep(p->data->ttd);
+		pthread_mutex_unlock(&p->mutexes[0]);
+		return (0);
+	}
+	if (p->philo_nb % 2 != 0)
+		pthread_mutex_lock(&p->mutexes[p->fork_left]);
+	else
+		pthread_mutex_lock(&p->mutexes[p->fork_right]);
+	if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
+	{
+		pthread_mutex_unlock(&p->mutexes[p->fork_left]);
+		pthread_mutex_unlock(&p->mutexes[p->fork_right]);
+		return (0);
+	}
+	return (1);
+}
 
 // int	act_eat(t_philo *p)
 // {

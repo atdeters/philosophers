@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 02:08:18 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 02:15:00 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,43 +24,29 @@ void	*daily_routine(void *philo)
 		if (p->data->ttd == 0)
 			break ;
 		act_manipulate_think(p);
-
-		
-		//================== FORK 1 Block
 		if (!act_take_fork_one(p))
 			break;
-		// if (p->philo_nb % 2 == 0)
+		
+		
+		//====================== FORK 2 Block
+		if (!act_take_fork_two(p))
+			break;
+		// if (p->data->nbp == 1)
+		// {
+		// 	usleep(p->data->ttd);
+		// 	pthread_mutex_unlock(&p->mutexes[0]);
+		// 	break ;
+		// }
+		// if (p->philo_nb % 2 != 0)
 		// 	pthread_mutex_lock(&p->mutexes[p->fork_left]);
 		// else
 		// 	pthread_mutex_lock(&p->mutexes[p->fork_right]);
 		// if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
 		// {
-		// 	if (p->philo_nb % 2 == 0)
-		// 		pthread_mutex_unlock(&p->mutexes[p->fork_left]);
-		// 	else
-		// 		pthread_mutex_unlock(&p->mutexes[p->fork_right]);
+		// 	pthread_mutex_unlock(&p->mutexes[p->fork_left]);
+		// 	pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 		// 	break ;
 		// }
-		//=======================
-		
-		
-		//====================== FORK 2 Block
-		if (p->data->nbp == 1) //TODO: Explain this part to documentation
-		{
-			usleep(p->data->ttd);
-			pthread_mutex_unlock(&p->mutexes[0]);
-			break ;
-		}
-		if (p->philo_nb % 2 != 0)
-			pthread_mutex_lock(&p->mutexes[p->fork_left]);
-		else
-			pthread_mutex_lock(&p->mutexes[p->fork_right]);
-		if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
-		{
-			pthread_mutex_unlock(&p->mutexes[p->fork_left]);
-			pthread_mutex_unlock(&p->mutexes[p->fork_right]);
-			break ;
-		}
 		//=======================
 
 
