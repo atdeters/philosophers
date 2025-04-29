@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 02:57:17 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 02:58:36 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	make_threads_and_time(t_data *data, t_philo **philos)
 		pthread_mutex_unlock(&data->mutexes[data->nbp + 1]);
 		return (data->error = ERR_THREAD_CREATE, ERR_THREAD_CREATE);
 	}
-	
 	if (gettimeofday(&data->start, NULL) < 0)
 	{
 		pthread_mutex_unlock(&data->mutexes[data->nbp + 1]);
