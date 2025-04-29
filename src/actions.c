@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:34:34 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/29 19:05:48 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/29 19:11:38 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	act_manipulate_think(t_philo *p)
 		if (p->data->nbp == 1 || p->data->nbp == 2)
 			return ;
 		extra = 0;
-		if	(p->data->tte > p->data->tts)
+		if (p->data->tte > p->data->tts)
 			extra = p->data->tte - p->data->tts;
 		if (usleep(20000 + extra))
 		{
