@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 02:58:36 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 13:37:52 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,20 +75,14 @@ int	make_threads_and_time(t_data *data, t_philo **philos)
 {
 	pthread_mutex_lock(&data->mutexes[data->nbp + 1]);
 	if (create_philo_threads(data, philos))
-	{
-		pthread_mutex_unlock(&data->mutexes[data->nbp + 1]);
 		return (data->error = ERR_THREAD_CREATE, ERR_THREAD_CREATE);
-	}
 	if (gettimeofday(&data->start, NULL) < 0)
 	{
 		pthread_mutex_unlock(&data->mutexes[data->nbp + 1]);
 		return (data->error = ERR_GTOD, ERR_GTOD);
 	}
 	if (create_death_thread(data, philos))
-	{
-		pthread_mutex_unlock(&data->mutexes[data->nbp + 1]);
 		return (data->error = ERR_THREAD_CREATE, ERR_THREAD_CREATE);
-	}
 	pthread_mutex_unlock(&data->mutexes[data->nbp + 1]);
 	return (0);
 }
