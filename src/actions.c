@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 01:34:34 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/29 02:15:10 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 02:18:31 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	act_manipulate_think(t_philo *p)
 	usleep(30000);
 	if (p->data->nbp % 2 != 0 && p->philo_nb == get_next_delay(p->data))
 	{
+		if (p->data->nbp == 1 || p->data->nbp == 2)
+			return ;
 		usleep(20000);
 		pthread_mutex_lock(&p->data->mutexes[p->data->nbp + 5]);
 		if (p->philo_nb == p->data->nbp)
