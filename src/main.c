@@ -6,7 +6,7 @@
 /*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 02:24:33 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/29 02:32:28 by andreas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,76 +19,17 @@ void	*daily_routine(void *philo)
 	p = (t_philo *)philo;
 	while (1)
 	{
-		
-		
 		if (p->data->ttd == 0)
 			break ;
 		act_manipulate_think(p);
 		if (!act_take_fork_one(p))
-			break;
-		
-		
-		//====================== FORK 2 Block
+			break ;
 		if (!act_take_fork_two(p))
-			break;
-		// if (p->data->nbp == 1)
-		// {
-		// 	usleep(p->data->ttd);
-		// 	pthread_mutex_unlock(&p->mutexes[0]);
-		// 	break ;
-		// }
-		// if (p->philo_nb % 2 != 0)
-		// 	pthread_mutex_lock(&p->mutexes[p->fork_left]);
-		// else
-		// 	pthread_mutex_lock(&p->mutexes[p->fork_right]);
-		// if (!p_log(p->data, p->philo_nb, FORK, p->mutexes))
-		// {
-		// 	pthread_mutex_unlock(&p->mutexes[p->fork_left]);
-		// 	pthread_mutex_unlock(&p->mutexes[p->fork_right]);
-		// 	break ;
-		// }
-		//=======================
-
-
-		//======================= EATING BLOCK
-		if (!p_log(p->data, p->philo_nb, EAT, p->mutexes))
-		{
-			pthread_mutex_unlock(&p->mutexes[p->fork_left]);
-			pthread_mutex_unlock(&p->mutexes[p->fork_right]);
 			break ;
-		}
-		pthread_mutex_lock(&p->mutexes[p->data->nbp + 2]);
-		p->time_since_meal = time_passed(p->data);
-		pthread_mutex_unlock(&p->mutexes[p->data->nbp + 2]);
-		usleep(p->data->tte);
-		p->times_eaten++;
-		pthread_mutex_unlock(&p->mutexes[p->fork_left]);
-		pthread_mutex_unlock(&p->mutexes[p->fork_right]);
-		if (p->times_eaten == p->data->nbte)
-		{
-			pthread_mutex_lock(&p->mutexes[p->data->nbp + 4]);
-			p->has_finished = true;
-			pthread_mutex_unlock(&p->mutexes[p->data->nbp + 4]);
-			pthread_mutex_lock(&p->mutexes[p->data->nbp + 3]);
-			p->data->nb_finished_eating++;
-			pthread_mutex_unlock(&p->mutexes[p->data->nbp + 3]);
+		if (!act_eat(p))
 			break ;
-		}
-		//==========================
-
-
-
-		
-
-		//============== Think & Sleep Block
 		if (!act_think_and_sleep(p))
 			break ;
-		// if (!p_log(p->data, p->philo_nb, SLEEP, p->mutexes))
-		// 	break ;
-		// usleep(p->data->tts);
-		// if (!p_log(p->data, p->philo_nb, THINK, p->mutexes))
-		// 	break ;
-		//======================
 	}
 	return (NULL);
 }
