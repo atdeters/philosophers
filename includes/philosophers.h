@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 14:13:19 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/29 14:32:49 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,27 @@ typedef struct s_data
 		* If not specified, the simulation stops when a philosopher dies.
 		*/
 	int				nbte;
+	/**
+	 * Tells the program that someone in the simulation died. It can also mean
+	 * that some critical error has occured and the program should act as if
+	 * someone died
+	 */
 	bool			is_kil;
+	/**
+	 * Integer that can hold the error code in case something went wrong
+	 */
 	int				error;
+	/**
+	 * Amount of philosophers that already finished eating
+	 */
 	int				nb_finished_eating;
+	/**
+	 * The starting point of gettimeofday
+	 */
 	struct timeval	start;
+	/**
+	 * The current point in gettimeofday
+	 */
 	struct timeval	curr;
 	unsigned int	elapsed;
 	pthread_t		*threads;
@@ -118,6 +135,11 @@ typedef struct s_data
 	 * - data.nbp + 5:	data.next_delay mutex 
 	 */
 	pthread_mutex_t	*mutexes;
+	/**
+	 * Sometimes philosophers are intentionally delayed to 
+	 * make the simulation more fair and give every one a
+	 * chance to get a fork
+	 */
 	int				next_delay;
 }					t_data;
 
