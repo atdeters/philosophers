@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 14:32:49 by adeters          ###   ########.fr       */
+/*   Updated: 2025/04/30 19:28:03 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,37 +180,6 @@ int					act_eat(t_philo *p);
 int					act_think_and_sleep(t_philo	*p);
 
 // check_overflow.c
-/**
- * @brief Determines if a string representation of a number
- * will overflow or underflow a 32-bit signed integer.
- *
- * This function evaluates whether converting a numeric string
- * to an integer using `ft_atoi()` would cause an overflow or
- * underflow of a 32-bit signed integer. It considers the maximum
- * and minimum values of `INT_MAX` (2147483647) and `INT_MIN` (-2147483648).
- *
- * The function accepts strings with optional `+` or `-` signs and ignores
- * leading zeros before the number. If the string is invalid (e.g., contains
- * no digits after the optional sign or zeros),
- * the function returns an error code.
- *
- * @param str The string containing the number to evaluate.
- * The string must be null-terminated and may include:
- *
- *            - An optional `+` or `-` as the first character.
- *
- *            - Leading zeros, which are ignored during evaluation.
- *
- * @return
- * - `0` if the number fits within the range of a 32-bit signed integer.
- *
- * - `-1` if the number would cause an underflow (less than `INT_MIN`).
- *
- * - `1` if the number would cause an overflow (greater than `INT_MAX`).
- *
- * - `-2` if the string is invalid (e.g., contains non-numeric
- * characters, or no digits after `+` or `-`).
- */
 int					check_overflow(char *str);
 
 // check.c - Checking of current state
