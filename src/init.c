@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 00:51:57 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/29 02:39:24 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/30 20:13:05 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	init_prog(t_data *data, int ac, char **av)
 {
+	*data = (t_data){0};
 	if (parse_args(data, ac, av))
 		return (data->error);
 	data->is_kil = false;
