@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_overflow.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 17:16:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 01:31:29 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/30 19:25:34 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	underflow_digits(char *str)
 		return (-1);
 	if (str[9] > 8 + '0' && ft_strncmp(str, "2147483648", 9) == 0)
 		return (-1);
-	return (0);
+	return (-3);
 }
 
 char	*ignore_sign(char *str, int *sign)
@@ -110,11 +110,13 @@ int	check_overflow(char *str)
 		return (-1);
 	if (len > 10 && sign == 1)
 		return (1);
-	if (len < 9)
+	if (sign == 1 && len < 9)
 		return (0);
 	if (len == 10 && sign == -1)
 		return (underflow_digits(new));
 	else if (len == 10)
 		return (overflow_digits(new));
+	if (sign == -1)
+		return (-3);
 	return (0);
 }

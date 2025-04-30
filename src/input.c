@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andreas <andreas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 18:33:31 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 01:31:59 by andreas          ###   ########.fr       */
+/*   Updated: 2025/04/30 19:26:04 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ int	check_arg(t_data *data, char *input, int *value, bool is_time)
 		return (data->error = p_err_arg(ERR_UNDERFLOW, input), 1);
 	else if (error == -2)
 		return (data->error = p_err_arg(ERR_INV_ARG, input), 1);
+	else if (error == -3)
+		return (data->error = p_err_arg(ERR_NEG_ARG, input), 1);
 	*value = ft_atoi(input);
 	if (is_time && INT_MAX / 1000 < *value)
 		return (p_err_arg(ERR_OVERFLOW, input));
 	if (is_time)
 		*value = *value * 1000;
-	if (*value < 0)
-		return (data->error = p_err_arg(ERR_NEG_ARG, input), 1);
 	return (0);
 }
 
