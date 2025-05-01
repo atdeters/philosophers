@@ -26,6 +26,7 @@ These are the inputs for the program. The order is important here.
 	<li>tts: time to sleep</li>
 	<li>nbte: number of times each philosopher has to eat before the simulation stops(this one is optional)</li>
 </ul>
+
 ```bash
 ./philo [nb] [tte] [tts] [nbte]
 ```
