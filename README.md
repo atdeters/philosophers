@@ -19,16 +19,13 @@ As an example of a successful execution with an odd amount of philosophers use t
 ```bash
 ./philo 5 610 200 200 5
 ```
-
-[IMAGE OF VISUALIZER]
+()[./img/ex_succ_odd.png]
 
 As an example of a successful execution with an even amount of philosophers use the following command:
 ```bash
 ./philo 6 402 200 200 5
 ```
-
-[IMAGE OF VISUALIZER]
-
+()[./img/ex_succ_even.png]
 As an example for an unsuccesful execution use the following command:
 ```bash
 ./philo 5 300 200 200 5
