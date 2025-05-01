@@ -94,7 +94,7 @@ This ensures that at least one philosopher will always be able to proceed, break
 
 
 ## Data Races
-<br><strong>⚠️ Problem</strong><br>
+<strong>⚠️ Problem</strong><br>
 A data race occurs when multiple threads access the same resource simultaneously, and at least one of them writes to it — leading to unpredictable behavior.  
 For example, if 10 threads try to increment the same counter at once, some updates might be lost.
 
@@ -109,7 +109,7 @@ This guarantees safe read/write access and prevents data races.
 
 
 ## Interleaved Printing
-<br><strong>⚠️ Problem</strong><br>
+<strong>⚠️ Problem</strong><br>
 The same kind of issue can happen when philosophers log their actions.  
 If multiple threads try to print to the standard output at the exact same time, their messages can interleave — resulting in unreadable or jumbled output.
 
@@ -119,7 +119,7 @@ By locking access to the output stream, we ensure that only one thread can print
 
 
 ## Unnecessary Starvation
-
+<strong>⚠️ Problem</strong><br>
 When multiple philosophers compete for the same fork, it's not guaranteed that everyone will get a fair chance to eat.  
 One philosopher might repeatedly win the race for a fork, while another is constantly left waiting — eventually dying, even though the simulation timing would allow all to survive under fair conditions.
 
