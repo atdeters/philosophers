@@ -1,8 +1,7 @@
 # Welcome to philosophers!
 
-The philosophers dining problem, originally formulated by Edsger Dijkstra is a classic problem that
-shows the problem of concurrent programs / multithreading such as Data Races and Deadlocks.
-This is 42s take on the problem and my solution to this problem.
+The <em>Dining Philosophers problem</em>, originally formulated by Edsger Dijkstra, is a classic example used to illustrate challenges in concurrent programming, such as data races and deadlocks.
+This project is 42’s take on the problem — and this repository contains my solution.
 
 #### Disclaimer for other 42 students
 This project is intended to be a learning exercise for 42 students. Please do not copy, fork, or steal code from this repository to submit as your own. The aim of the project is to help you learn, not just complete the assignment. If you’re stuck, work through the problem, ask for help, or discuss it with peers, but do not simply use other students' solutions. We believe in the value of learning through challenges, and that’s the only way you’ll truly grow and succeed at 42. Let’s keep it fair and fun!
@@ -54,70 +53,101 @@ to die:
 
 # The Problem
 ## The Simulation
-There are n philosophers sitting at a round table. Between every philosopher there is a single fork.
-The problem is, that the type of spaghetti they are trying to eat is a difficult kind and therefore
-they are in need of two forks to be able to eat. The daily routine of a philosopher consists of eating,
-sleeping and thinking. They can only do one of those at the same time. They can also not communicate with
-each other or take someone elses fork.
-Also of course they should avoid dying. In the simulation we can give the program specific values for the amount of philosophers, 
-the time to die, time to sleep and time to eat. Optionally we can add a value for the amount of times 
-every philosopher needs to eat before the simulation succeeds
+There are <strong>n</strong> philosophers sitting around a circular table. Between each pair of philosophers lies a single fork.  
+The challenge? They're trying to eat a particularly tricky kind of spaghetti — and they need <strong>two forks</strong> to do so.
+
+Each philosopher follows a routine: <em>eating</em>, <em>sleeping</em>, and <em>thinking</em>. They can only do one activity at a time. They can't communicate with each other, and they can’t use someone else’s fork unless it’s available on the table.
+
+And of course — they should avoid dying.
+
+The simulation allows us to configure several parameters:
+
+- the <strong>number of philosophers</strong>  
+- <strong>time to die</strong>  
+- <strong>time to eat</strong>  
+- <strong>time to sleep</strong>  
+- <em>(optional)</em> the <strong>number of times each philosopher must eat</strong> before the simulation ends successfully
 
 ## The Simulation as a program
-In the program every philosopher is represented as a single thread using pthread library. The forks are represented as mutexes.
-Every philosopher loops indefinitely in a daily routine in which he does all the actions. Another thread called death thread
-checks wheter someone has died already which will stop the simulation immediately.
-Every action is logged on the standart output in the format: 
-[Timestamp] [philosopher nb] [action]
+In the program, each philosopher is represented as a separate thread using the <strong>pthread</strong> library.  
+The forks are represented as <strong>mutexes</strong>.
+
+Each philosopher runs in an infinite loop, going through their daily routine one action at a time.  
+Another thread, the so-called <em>death thread</em>, continuously checks whether a philosopher has died — if so, the simulation stops immediately.
+
+All actions are logged to the standard output in the following format:  
+<code>[timestamp] [philosopher number] [action]</code>
 
 [IMAGE OF NORMAL OUTPUT]
 
 ## Difficulties
 Using multithreading in a programm causes new difficulties that need a special kind of treatment. 
-### Dead Locks
-Deadlocks occur when mulitple locks wait for each other to finish their task. As an example here we can imagine, that every
-philosopher takes their left fork at the start of the simulation and waits for their right fork to be unlocked. In this situation
-everyone will wait and therefore we will be stuck forever.
-<br><b>Solution</b><br>
-Instead of letting everyphilosopher grab the same fork we let every odd numbered philosopher take the right and every even
-numbered philosopher take the left fork first. This way we can never have the situation in which everyone is waiting for the
-next persons fork.
+### Deadlocks
+
+Deadlocks occur when multiple threads are each waiting on a resource that another thread is holding — causing a standstill.  
+In this simulation, a deadlock can happen if every philosopher picks up their left fork first and then waits for the right one.  
+If all philosophers do this at the same time, they’ll be stuck waiting forever.
+
+<br><strong>Solution</strong><br>
+To prevent this, we alternate the order in which philosophers pick up forks:  
+odd-numbered philosophers pick up their <strong>right</strong> fork first, while even-numbered ones pick up their <strong>left</strong> fork first.  
+This ensures that at least one philosopher will always be able to proceed, breaking the potential for a deadlock.
+
 
 ### Data Races
-When multiple threads are calling the same ressources a so called data race is possible. This means that for example if 10 threads
-try to increase the same value some of them will get lost and not actually increase the variable [Add deeper explanation with what happens
-in the background with registers and shit]
-<br><b>Solution</b><br>
-The solution is to protect these kinds of ressources using mutexes. What they do is to lock them and only allow the next thread to use
-them after the initial thread unlocks them again. This way it can be ensured that only one thread reads or writes to this data at a time
-and data races can not happen.
 
-### Intervealed Printing
-The same problem can occur for printing out the logs of what each philosopher is doing at a certain time. As these messages will
-be printed exactly at the same time sometimes their characters can mix up into an unreadable mess.
-<br><b>Solution</b><br>
-The solution is also to use mutex for every function that prints to the STDOUT. This way only one thread can print at a time and
-the messages will not get mixed up.
+A data race occurs when multiple threads access the same resource simultaneously, and at least one of them writes to it — leading to unpredictable behavior.  
+For example, if 10 threads try to increment the same counter at once, some updates might be lost.
 
-### Unneccesary starvation
-When multiple philosophers are fighting over the same fork it is not guaranteed that everyone will get to eat. It might happen
-that one wins over the other multiple times in a row so that the other one does not get to eat at all and therefore dies eventhough
-the timings in the simulation would be enough for everyone to survive.
-<br><b>Solution</b><br>
-The solution to this unfair fighting over a fork is to manipulate the thinking time of certain philosophers to make the other one
-win over the fork. In this version the even numbered philosophers are delayed by 20ms and the first philosopher is delayed by 30ms.
-For every next round the next odd numbered philosopher will be delayed. So in the beginning the first, then the third, then the fifth
-and so on. This way they will alternate nicely who will wait a bit more as seen in the picture below indicated by the little green
-block of thinking time before they take the fork:
+<em>Why?</em>  
+Under the hood, each thread might load the value into its own CPU register, increment it, and write it back —  
+but if two threads do this at the same time, they can overwrite each other’s result. This happens because the operation isn't truly atomic.
+
+<br><strong>Solution</strong><br>
+We use <strong>mutexes</strong> to protect shared resources.  
+A mutex ensures that only one thread can access a piece of data at a time: it <em>locks</em> the resource, and other threads must wait until it's <em>unlocked</em> before continuing.  
+This guarantees safe read/write access and prevents data races.
+
+
+### Interleaved Printing
+
+The same kind of issue can happen when philosophers log their actions.  
+If multiple threads try to print to the standard output at the exact same time, their messages can interleave — resulting in unreadable or jumbled output.
+
+<br><strong>Solution</strong><br>
+To prevent this, we use a <strong>mutex</strong> to guard all printing to <code>STDOUT</code>.  
+By locking access to the output stream, we ensure that only one thread can print at a time — keeping the logs clean and readable.
+
+
+### Unnecessary Starvation
+
+When multiple philosophers compete for the same fork, it's not guaranteed that everyone will get a fair chance to eat.  
+One philosopher might repeatedly win the race for a fork, while another is constantly left waiting — eventually dying, even though the simulation timing would allow all to survive under fair conditions.
+
+<br><strong>Solution</strong><br>
+To avoid this kind of unfair starvation, we introduce small delays in the thinking time of certain philosophers.  
+In this version:
+
+- even-numbered philosophers are delayed by <strong>20ms</strong>  
+- philosopher 1 is delayed by <strong>30ms</strong>  
+- for each new round, the delay shifts to the next odd-numbered philosopher (1st, then 3rd, then 5th, etc.)
+
+This way, philosophers alternate more fairly in who gets to act first.  
+As shown in the diagram below, the brief green "thinking time" blocks ensure smoother and more balanced fork access.
+
+
 <img	src="./img/ex_succ_odd.png" 
 		alt="Image of visualized execution with the command ./philo 5 610 200 200 5"
 		style="max-width: 100%; max-height: 312px; height: auto;"
 		title="Visualized result of the command ./philo 5 610 200 200 5">
 </img>
 
-If the time to eat is larger then the time to sleep this approach will not be enough yet, as they have to wait for the other philosopher
-to finish eating anyways, so the delay will to nothing. For this case there is the logic that we add to our delay the time to eat minus 
-the time to sleep to make up for this waiting time.
+If the <strong>time to eat</strong> is greater than the <strong>time to sleep</strong>, this delay strategy alone isn't enough.  
+In that case, philosophers are still forced to wait for others to finish eating — the delay becomes ineffective.
+
+To handle this, we adjust the delay dynamically:  
+we add <code>(time_to_eat - time_to_sleep)</code> to the base delay.  
+This compensates for the unavoidable waiting time and helps maintain fairness in more demanding configurations.
 
 # Special Thanks
 I highly recommend checking out the ["philosophers visualizer"](https://rom98759.github.io/Philosophers-visualizer/) from [rom98759](https://github.com/rom98759) who is student at 42 Angoulême. It is a super helpful tool to visualize the output of the program and to identify possible problems in your code. The Images used in this README have been made using this tool.
