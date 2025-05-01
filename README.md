@@ -19,7 +19,7 @@ As an example of a successful execution with an odd amount of philosophers use t
 ```bash
 ./philo 5 610 200 200 5
 ```
-<img href="./img/ex_succ_odd.png" alt="Image of execution with the command ./philo 5 610 200 200 5">./philo 5 610 200 200 5</img>
+<img src="./img/ex_succ_odd.png" alt="Image of execution with the command ./philo 5 610 200 200 5">./philo 5 610 200 200 5</img>
 
 As an example of a successful execution with an even amount of philosophers use the following command:
 ```bash
