@@ -80,10 +80,7 @@ All actions are logged to the standard output in the following format:
 [IMAGE OF NORMAL OUTPUT]
 
 # Difficulties
-Using multithreading in a program introduces a unique set of challenges that don't exist in single-threaded applications.  
-When multiple threads run in parallel and interact with shared resources, new problems arise — such as race conditions, deadlocks, and inconsistent outputs.  
-These issues require careful design, synchronization mechanisms, and sometimes clever tricks to ensure the program behaves reliably and predictably.
-
+Using multithreading in a programm causes new difficulties that need a special kind of treatment. 
 ## Deadlocks
 <strong>⚠️ Problem</strong><br>
 Deadlocks occur when multiple threads are each waiting on a resource that another thread is holding — causing a standstill.  
