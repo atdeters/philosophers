@@ -82,7 +82,7 @@ All actions are logged to the standard output in the following format:
 # Difficulties
 Using multithreading in a programm causes new difficulties that need a special kind of treatment. 
 ## Deadlocks
-<br><strong>⚠️ Problem</strong><br>
+<strong>⚠️ Problem</strong><br>
 Deadlocks occur when multiple threads are each waiting on a resource that another thread is holding — causing a standstill.  
 In this simulation, a deadlock can happen if every philosopher picks up their left fork first and then waits for the right one.  
 If all philosophers do this at the same time, they’ll be stuck waiting forever.
@@ -119,7 +119,7 @@ By locking access to the output stream, we ensure that only one thread can print
 
 
 ## Unnecessary Starvation
-<br><strong>⚠️ Problem</strong><br>
+
 When multiple philosophers compete for the same fork, it's not guaranteed that everyone will get a fair chance to eat.  
 One philosopher might repeatedly win the race for a fork, while another is constantly left waiting — eventually dying, even though the simulation timing would allow all to survive under fair conditions.
 
