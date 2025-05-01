@@ -78,7 +78,7 @@ Using multithreading in a programm causes new difficulties that need a special k
 Deadlocks occur when mulitple locks wait for each other to finish their task. As an example here we can imagine, that every
 philosopher takes their left fork at the start of the simulation and waits for their right fork to be unlocked. In this situation
 everyone will wait and therefore we will be stuck forever.
-<b>Solution</b>
+<br><b>Solution</b>
 Instead of letting everyphilosopher grab the same fork we let every odd numbered philosopher take the right and every even
 numbered philosopher take the left fork first. This way we can never have the situation in which everyone is waiting for the
 next persons fork.
@@ -87,7 +87,7 @@ next persons fork.
 When multiple threads are calling the same ressources a so called data race is possible. This means that for example if 10 threads
 try to increase the same value some of them will get lost and not actually increase the variable [Add deeper explanation with what happens
 in the background with registers and shit]
-<b>Solution</b>
+<br><b>Solution</b>
 The solution is to protect these kinds of ressources using mutexes. What they do is to lock them and only allow the next thread to use
 them after the initial thread unlocks them again. This way it can be ensured that only one thread reads or writes to this data at a time
 and data races can not happen.
@@ -95,7 +95,7 @@ and data races can not happen.
 ### Intervealed Printing
 The same problem can occur for printing out the logs of what each philosopher is doing at a certain time. As these messages will
 be printed exactly at the same time sometimes their characters can mix up into an unreadable mess.
-<b>Solution</b>
+<br><b>Solution</b>
 The solution is also to use mutex for every function that prints to the STDOUT. This way only one thread can print at a time and
 the messages will not get mixed up.
 
@@ -103,7 +103,7 @@ the messages will not get mixed up.
 When multiple philosophers are fighting over the same fork it is not guaranteed that everyone will get to eat. It might happen
 that one wins over the other multiple times in a row so that the other one does not get to eat at all and therefore dies eventhough
 the timings in the simulation would be enough for everyone to survive.
-<b>Solution</b>
+<br><b>Solution</b>
 The solution to this unfair fighting over a fork is to manipulate the thinking time of certain philosophers to make the other one
 win over the fork. In this version the even numbered philosophers are delayed by 20ms and the first philosopher is delayed by 30ms.
 For every next round the next odd numbered philosopher will be delayed. So in the beginning the first, then the third, then the fifth
