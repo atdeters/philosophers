@@ -16,7 +16,7 @@ This project is intended to be a learning exercise for 42 students. Please do no
 
 ## One-Line Installation
 ```bash
-git clone https://github.com/your-username/philosophers.git && cd philosophers && make
+git clone git@github.com:atdeters/philosophers.git && cd philosophers && make
 ```
 ## Running the philosophers program
 ## Examples
