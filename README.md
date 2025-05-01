@@ -165,4 +165,4 @@ we add <code>(time_to_eat - time_to_sleep)</code> to the base delay.
 This compensates for the unavoidable waiting time and helps maintain fairness in more demanding configurations.
 
 # Special Thanks
-I highly recommend checking out the ["philosophers visualizer"](https://rom98759.github.io/Philosophers-visualizer/) from [rom98759](https://github.com/rom98759) who is student at 42 Angoulême. It is a super helpful tool to visualize the output of the program and to identify possible problems in your code. The Images used in this README have been made using this tool.
+I highly recommend checking out the <a href="https://rom98759.github.io/Philosophers-visualizer/" target="_blank" rel="noopener noreferrer">philosophers visualizer</a> from [rom98759](https://github.com/rom98759) who is student at 42 Angoulême. It is a super helpful tool to visualize the output of the program and to identify possible problems in your code. The Images used in this README have been made using this tool.
