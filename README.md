@@ -1,6 +1,7 @@
 # Welcome to philosophers!
 
 Hey there, welcome to our Minishell project! 🎉
+
 The <em>Dining Philosophers problem</em>, originally formulated by Edsger Dijkstra, is a classic example used to illustrate challenges in concurrent programming, such as data races and deadlocks.
 This project is 42’s take on the problem — and this repository contains my solution.
 
