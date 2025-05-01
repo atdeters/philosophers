@@ -24,7 +24,7 @@ These are the inputs for the program. The order is important here.
 	<li>nb: number of philosophers</li>
 	<li>ttd: time to die (since last meal)</li>
 	<li>tts: time to sleep</li>
-	<li>nbte: number of times each philosopher has to eat before the simulation stops(this one is optional)</li>
+	<li>nbte: number of times each philosopher has to eat before the simulation stops (this one is optional)</li>
 </ul>
 
 ```bash
