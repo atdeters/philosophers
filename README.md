@@ -15,11 +15,8 @@ This project is intended to be a learning exercise for 42 students. Please do no
 - POSIX Threads library (`pthread`) — typically preinstalled on Unix-like systems
 
 ## Downloading it
-## Running it
-### Usage
-
-
-### Examples
+## Running the philosophers program
+## Examples
 As an example of a successful execution with an odd amount of philosophers use the following command:
 ```bash
 ./philo 5 610 200 200 5
