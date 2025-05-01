@@ -89,7 +89,8 @@ If all philosophers do this at the same time, they’ll be stuck waiting forever
 
 <br><strong>💡 Solution</strong><br>
 To prevent this, we alternate the order in which philosophers pick up forks:  
-odd-numbered philosophers pick up their <strong>right</strong> fork first, while even-numbered ones pick up their <strong>left</strong> fork first.  
+- Odd-numbered philosophers pick up their <strong>right</strong> fork first
+- Even-numbered ones pick up their <strong>left</strong> fork first.  
 This ensures that at least one philosopher will always be able to proceed, breaking the potential for a deadlock.
 
 
