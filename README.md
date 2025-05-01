@@ -107,7 +107,8 @@ the timings in the simulation would be enough for everyone to survive.
 The solution to this unfair fighting over a fork is to manipulate the thinking time of certain philosophers to make the other one
 win over the fork. In this version the even numbered philosophers are delayed by 20ms and the first philosopher is delayed by 30ms.
 For every next round the next odd numbered philosopher will be delayed. So in the beginning the first, then the third, then the fifth
-and so on. This way they will alternate nicely who will wait a bit more as seen in the picture from earlier.
+and so on. This way they will alternate nicely who will wait a bit more as seen in the picture below indicated by the little green
+block of thinking time before they take the fork:
 <img	src="./img/ex_succ_odd.png" 
 		alt="Image of visualized execution with the command ./philo 5 610 200 200 5"
 		style="max-width: 100%; max-height: 312px; height: auto;"
