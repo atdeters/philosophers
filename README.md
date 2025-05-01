@@ -19,13 +19,21 @@ As an example of a successful execution with an odd amount of philosophers use t
 ```bash
 ./philo 5 610 200 200 5
 ```
-<img src="./img/ex_succ_odd.png" alt="Image of execution with the command ./philo 5 610 200 200 5"></img>
+<img	src="./img/ex_succ_odd.png" 
+		alt="Image of visualized execution with the command ./philo 5 610 200 200 5"
+		height="312"
+		width="1180">
+</img>
 
 As an example of a successful execution with an even amount of philosophers use the following command:
 ```bash
 ./philo 6 402 200 200 5
 ```
-<img src="./img/ex_succ_even.png" alt="Image of execution with the command ./philo 6 402 200 200 5"></img>
+<img	src="./img/ex_succ_even.png" 
+		alt="Image of visualized execution with the command ./philo 6 402 200 200 5"
+		height="354"
+		width="1180">
+</img>
 
 As an example for an unsuccesful execution use the following command:
 ```bash
@@ -38,8 +46,11 @@ to die:
 ```bash
 ./philo 1 500 200 200
 ```
-
-[IMAGE OF BASH OUTPUT]
+<img	src="./img/ex_single_philo.png" 
+		alt="Image of execution with a single philosopher"
+		height="85"
+		width="359">
+</img>
 
 # The Problem
 ## The Simulation
