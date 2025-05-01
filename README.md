@@ -21,8 +21,7 @@ As an example of a successful execution with an odd amount of philosophers use t
 ```
 <img	src="./img/ex_succ_odd.png" 
 		alt="Image of visualized execution with the command ./philo 5 610 200 200 5"
-		height="312"
-		width="1180">
+		style="max-width: 100%; max-height: 312px; height: auto;">
 </img>
 
 As an example of a successful execution with an even amount of philosophers use the following command:
