@@ -8,6 +8,12 @@ This project is intended to be a learning exercise for 42 students. Please do no
 
 # Installation & Setup
 ## Dependencies
+
+- A Unix-like operating system (e.g., Linux or macOS)  
+- GNU Make  
+- GCC or Clang  
+- POSIX Threads library (`pthread`) — typically preinstalled on Unix-like systems
+
 ## Downloading it
 ## Running it
 ### Usage
