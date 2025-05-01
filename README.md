@@ -103,5 +103,5 @@ If the time to eat is larger then the time to sleep this approach will not be en
 to finish eating anyways, so the delay will to nothing. For this case there is the logic that we add to our delay the time to eat minus 
 the time to sleep to make up for this waiting time.
 
-# Resources
-The Images used in this README have been copied from this useful visualizer. It helps a lot in identifying possible errors with the code.
+# Special Thanks
+I highly recommend checking out the ["philosophers visualizer"](https://rom98759.github.io/Philosophers-visualizer/) from [rom98759](https://github.com/rom98759) who is student at 42 Angoulême. It is a super helpful tool to visualize the output of the program and to identify possible problems in your code. The Images used in this README have been made using this tool.
