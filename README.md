@@ -30,8 +30,7 @@ As an example of a successful execution with an even amount of philosophers use 
 ```
 <img	src="./img/ex_succ_even.png" 
 		alt="Image of visualized execution with the command ./philo 6 402 200 200 5"
-		height="354"
-		width="1180">
+		style="max-width: 100%; max-height: 354px; height: auto;">
 </img>
 
 As an example for an unsuccesful execution use the following command:
@@ -47,8 +46,7 @@ to die:
 ```
 <img	src="./img/ex_single_philo.png" 
 		alt="Image of execution with a single philosopher"
-		height="85"
-		width="359">
+		style="max-width: 100%; max-height: 85px; height: auto;">
 </img>
 
 # The Problem
