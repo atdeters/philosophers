@@ -94,7 +94,11 @@ Another thread, the so-called <em>death thread</em>, continuously checks whether
 All actions are logged to the standard output in the following format:  
 <code>[timestamp] [philosopher number] [action]</code>
 
-[IMAGE OF NORMAL OUTPUT]
+<img	src="./img/typical_output.png" 
+		alt="Image of the typical output of the simulation"
+		style="max-width: 100%; max-height: 171px; height: auto;"
+		title="This is the typical simulation output">
+</img>
 
 # Difficulties
 Using multithreading in a programm causes new difficulties that need a special kind of treatment. 
