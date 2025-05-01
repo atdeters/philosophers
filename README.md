@@ -19,6 +19,16 @@ This project is intended to be a learning exercise for 42 students. Please do no
 git clone git@github.com:atdeters/philosophers.git && cd philosophers && make
 ```
 ## Running the philosophers program
+These are the inputs for the program. The order is important here.
+<ul>
+	<li>nb: number of philosophers</li>
+	<li>ttd: time to die (since last meal)</li>
+	<li>tts: time to sleep</li>
+	<li>nbte: number of times each philosopher has to eat before the simulation stops(this one is optional)</li>
+</ul>
+```bash
+./philo [nb] [tte] [tts] [nbte]
+```
 ## Examples
 As an example of a successful execution with an odd amount of philosophers use the following command:
 ```bash
