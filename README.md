@@ -123,8 +123,18 @@ By locking access to the output stream, we ensure that only one thread can print
 
 ## Unnecessary Starvation
 <strong>⚠️ Problem</strong><br>
-When multiple philosophers compete for the same fork, it's not guaranteed that everyone will get a fair chance to eat.  
-One philosopher might repeatedly win the race for a fork, while another is constantly left waiting — eventually dying, even though the simulation timing would allow all to survive under fair conditions.
+When multiple philosophers compete for the same fork, there's no guarantee that everyone will get a fair chance to eat.  
+A philosopher might repeatedly lose the race for the fork, while another — who just finished eating — wins again, simply because they're faster.
+
+The image below illustrates this problem:  
+Philosopher 4 starves because they continuously lose access to the shared fork to Philosopher 5, who already ate but manages to grab the fork again before 4 can.  
+Despite having enough time in theory, unfair competition leads to 4's untimely death.
+
+<img	src="./img/ex_fail_unfair.png" 
+		alt="Image of visualized execution with the command ./philo 5 610 200 200 without manipulating the thinking time"
+		style="max-width: 100%; max-height: 289px; height: auto;"
+		title="Visualized result of the failed command ./philo 5 610 200 200">
+</img>
 
 <br><strong>💡 Solution</strong><br>
 To avoid this kind of unfair starvation, we introduce small delays in the thinking time of certain philosophers.  

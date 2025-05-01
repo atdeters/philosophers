@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:52 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 13:37:52 by adeters          ###   ########.fr       */
+/*   Updated: 2025/05/01 15:53:22 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*daily_routine(void *philo)
 	{
 		if (p->data->ttd == 0)
 			break ;
-		act_manipulate_think(p);
+		// act_manipulate_think(p);
 		if (!act_take_fork_one(p))
 			break ;
 		if (!act_take_fork_two(p))
