@@ -21,7 +21,8 @@ As an example of a successful execution with an odd amount of philosophers use t
 ```
 <img	src="./img/ex_succ_odd.png" 
 		alt="Image of visualized execution with the command ./philo 5 610 200 200 5"
-		style="max-width: 100%; max-height: 312px; height: auto;">
+		style="max-width: 100%; max-height: 312px; height: auto;"
+		title="Visualized result of the command ./philo 5 610 200 200 5">
 </img>
 
 As an example of a successful execution with an even amount of philosophers use the following command:
@@ -30,7 +31,8 @@ As an example of a successful execution with an even amount of philosophers use 
 ```
 <img	src="./img/ex_succ_even.png" 
 		alt="Image of visualized execution with the command ./philo 6 402 200 200 5"
-		style="max-width: 100%; max-height: 354px; height: auto;">
+		style="max-width: 100%; max-height: 354px; height: auto;"
+		title="Visualized result of the command ./philo 6 402 200 200 5">
 </img>
 
 As an example for an unsuccesful execution use the following command:
@@ -46,7 +48,8 @@ to die:
 ```
 <img	src="./img/ex_single_philo.png" 
 		alt="Image of execution with a single philosopher"
-		style="max-width: 100%; max-height: 85px; height: auto;">
+		style="max-width: 100%; max-height: 85px; height: auto;"
+		title="Result of the command ./philo 1 500 200 200">
 </img>
 
 # The Problem
