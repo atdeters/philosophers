@@ -3,10 +3,12 @@
 The philosophers dining problem, originally formulated by Edsger Dijkstra is a classic problem that
 shows the problem of concurrent programs / multithreading such as Data Races and Deadlocks.
 This is 42s take on the problem and my solution to this problem.
-Disclaimer for 42 students:
-Don't just steal this!
 
-# Running the program
+#### Disclaimer for other 42 students
+This project is intended to be a learning exercise for 42 students. Please do not copy, fork, or steal code from this repository to submit as your own. The aim of the project is to help you learn, not just complete the assignment. If you’re stuck, work through the problem, ask for help, or discuss it with peers, but do not simply use other students' solutions. We believe in the value of learning through challenges, and that’s the only way you’ll truly grow and succeed at 42. Let’s keep it fair and fun!
+
+# Installation & Setup
+## Dependencies
 ## Downloading it
 ## Running it
 ### Usage
