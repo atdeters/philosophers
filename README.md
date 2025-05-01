@@ -19,17 +19,19 @@ As an example of a successful execution with an odd amount of philosophers use t
 ```bash
 ./philo 5 610 200 200 5
 ```
-<img src="./img/ex_succ_odd.png" alt="Image of execution with the command ./philo 5 610 200 200 5">./philo 5 610 200 200 5</img>
+<img src="./img/ex_succ_odd.png" alt="Image of execution with the command ./philo 5 610 200 200 5"></img>
 
 As an example of a successful execution with an even amount of philosophers use the following command:
 ```bash
 ./philo 6 402 200 200 5
 ```
-[](./img/ex_succ_even.png)
+<img src="./img/ex_succ_even.png" alt="Image of execution with the command ./philo 6 402 200 200 5"></img>
+
 As an example for an unsuccesful execution use the following command:
 ```bash
 ./philo 5 300 200 200 5
 ```
+
 Another interesting case is only having a single philsopher in the simulation.
 The will never be able to get the second fork and will just die after the time 
 to die:
