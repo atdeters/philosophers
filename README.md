@@ -81,18 +81,18 @@ All actions are logged to the standard output in the following format:
 
 # Difficulties
 Using multithreading in a programm causes new difficulties that need a special kind of treatment. 
-## Deadlocks
+## ⚠️ Deadlocks
 Deadlocks occur when multiple threads are each waiting on a resource that another thread is holding — causing a standstill.  
 In this simulation, a deadlock can happen if every philosopher picks up their left fork first and then waits for the right one.  
 If all philosophers do this at the same time, they’ll be stuck waiting forever.
 
-<br><strong>Solution</strong><br>
+<br><strong>💡 Solution</strong><br>
 To prevent this, we alternate the order in which philosophers pick up forks:  
 odd-numbered philosophers pick up their <strong>right</strong> fork first, while even-numbered ones pick up their <strong>left</strong> fork first.  
 This ensures that at least one philosopher will always be able to proceed, breaking the potential for a deadlock.
 
 
-## Data Races
+## ⚠️ Data Races
 A data race occurs when multiple threads access the same resource simultaneously, and at least one of them writes to it — leading to unpredictable behavior.  
 For example, if 10 threads try to increment the same counter at once, some updates might be lost.
 
@@ -100,26 +100,26 @@ For example, if 10 threads try to increment the same counter at once, some updat
 Under the hood, each thread might load the value into its own CPU register, increment it, and write it back —  
 but if two threads do this at the same time, they can overwrite each other’s result. This happens because the operation isn't truly atomic.
 
-<br><strong>Solution</strong><br>
+<br><strong>💡 Solution</strong><br>
 We use <strong>mutexes</strong> to protect shared resources.  
 A mutex ensures that only one thread can access a piece of data at a time: it <em>locks</em> the resource, and other threads must wait until it's <em>unlocked</em> before continuing.  
 This guarantees safe read/write access and prevents data races.
 
 
-## Interleaved Printing
+## ⚠️ Interleaved Printing
 The same kind of issue can happen when philosophers log their actions.  
 If multiple threads try to print to the standard output at the exact same time, their messages can interleave — resulting in unreadable or jumbled output.
 
-<br><strong>Solution</strong><br>
+<br><strong>💡 Solution</strong><br>
 To prevent this, we use a <strong>mutex</strong> to guard all printing to <code>STDOUT</code>.  
 By locking access to the output stream, we ensure that only one thread can print at a time — keeping the logs clean and readable.
 
 
-## Unnecessary Starvation
+## ⚠️ Unnecessary Starvation
 When multiple philosophers compete for the same fork, it's not guaranteed that everyone will get a fair chance to eat.  
 One philosopher might repeatedly win the race for a fork, while another is constantly left waiting — eventually dying, even though the simulation timing would allow all to survive under fair conditions.
 
-<br><strong>Solution</strong><br>
+<br><strong>💡 Solution</strong><br>
 To avoid this kind of unfair starvation, we introduce small delays in the thinking time of certain philosophers.  
 In this version:
 
