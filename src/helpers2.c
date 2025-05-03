@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 18:30:51 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/29 14:13:02 by adeters          ###   ########.fr       */
+/*   Updated: 2025/05/03 17:44:44 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,11 @@ int	get_next_delay(t_data *data)
 	return (pthread_mutex_unlock(&data->mutexes[data->nbp + 5]), res);
 }
 
-void	do_on_sleep_fail(t_philo **ps)
+int	unlock_both(t_philo *p)
 {
-	pthread_mutex_lock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
-	(*ps)->data->is_kil = true;
-	pthread_mutex_unlock(&(*ps)->mutexes[(*ps)->data->nbp + 1]);
-	p_str_fd(2, "Error: usleep function failed!\n");
+	pthread_mutex_unlock(&p->mutexes[p->fork_left]);
+	pthread_mutex_unlock(&p->mutexes[p->fork_right]);
+	return (0);
 }
 
 bool	is_over(t_philo **ps)

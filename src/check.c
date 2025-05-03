@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 01:02:24 by andreas           #+#    #+#             */
-/*   Updated: 2025/04/29 14:13:30 by adeters          ###   ########.fr       */
+/*   Updated: 2025/05/03 17:38:33 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ void	*death_thread(void *philos)
 	int		i;
 
 	ps = (t_philo **)philos;
-	if (usleep(50000))
-		return (do_on_sleep_fail(ps), NULL);
+	usleep(50000);
 	while (1)
 	{
 		i = 0;
@@ -79,8 +78,7 @@ void	*death_thread(void *philos)
 		}
 		if (is_over(ps) || everyone_ate(ps))
 			break ;
-		if (usleep(500))
-			return (do_on_sleep_fail(ps), NULL);
+		usleep(500);
 	}
 	return (NULL);
 }

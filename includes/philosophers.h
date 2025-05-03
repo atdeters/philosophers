@@ -6,7 +6,7 @@
 /*   By: adeters <adeters@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 16:03:45 by adeters           #+#    #+#             */
-/*   Updated: 2025/04/30 19:28:03 by adeters          ###   ########.fr       */
+/*   Updated: 2025/05/03 17:44:56 by adeters          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,8 +231,11 @@ int					ft_strncmp(const char *s1, const char *s2, size_t n);
  * It's used as a function to ensure that there are no data races
  */
 int					get_next_delay(t_data *data);
-void				do_on_sleep_fail(t_philo **ps);
+int					unlock_both(t_philo *p);
 bool				is_over(t_philo **ps);
+
+// helpers3.c
+int					ft_usleep(int time, t_data *data);
 
 // init.c
 int					init_prog(t_data *data, int ac, char **av);
