@@ -5,9 +5,17 @@ CFLAGS		=	-Wall -Wextra -Werror
 DBFLAGS		=	-g
 LFLAGS		=	-pthread
 
-SRC_FILES	=	main.c helpers.c helpers2.c \
-				printer.c check_overflow.c init.c \
-				free.c input.c check.c actions.c helpers3.c
+SRC_FILES	=	actions.c \
+				check.c \
+				check_overflow.c \
+				free.c \
+				helpers2.c \
+				helpers3.c \
+				helpers.c \
+				init.c \
+				input.c \
+				main.c \
+				printer.c \
 
 SRCS		=	$(addprefix src/, $(SRC_FILES))
 
